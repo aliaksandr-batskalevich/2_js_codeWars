@@ -61,13 +61,13 @@ const rps = (p1, p2) => {
     }
 }
 
-function Ship(draft,crew) {
+function Ship(draft, crew) {
     this.draft = draft;
     this.crew = crew;
     this.isWorthIt = () => this.draft - this.crew * 1.5 >= 20
 }
 
-function repeatStr (n, s) {
+function repeatStr(n, s) {
     let answerArr = [];
     for (let i = 0; i < n; i++) {
         answerArr[i] = s;
@@ -76,4 +76,69 @@ function repeatStr (n, s) {
 }
 
 const shark = (pD, sD, yS, sS, d) => (pD / yS <= sD / (d ? sS / 2 : sS)) ? 'Alive!' : 'Shark Bait!';
-console.log(shark(24, 0, 4, 8, true));
+
+function opposite(number) {
+    return -number;
+}
+
+// 07-01-2022
+
+// const warnTheSheep = queue => {
+//     const arrTest = queue.reverse();
+//     const indexOfWolf = arrTest.indexOf('wolf');
+//     if (indexOfWolf === 0) {
+//         return 'Pls go away and stop eating my sheep';
+//     } else {
+//         return 'Oi! Sheep number ' + indexOfWolf + '! You are about to be eaten by a wolf!'
+//     }
+// }
+const warnTheSheep = queue => queue.reverse().indexOf('wolf') === 0
+    ? 'Pls go away and stop eating my sheep'
+    : `Oi! Sheep number ${queue.indexOf('wolf')}! You are about to be eaten by a wolf!`;
+
+const xor = (a, b) => a !== b;
+
+const validateUsr = username => {
+    if (username.length < 4 || username.length > 16) {
+        return false
+    }
+    const userNameArr = username.split('');
+    console.log(userNameArr);
+    const rulesStr = 'abcdefghijklmnopqrstyvwxyz0123456789_';
+    const rulesArr = rulesStr.split("");
+    console.log(rulesArr);
+    for (let item of userNameArr) {
+        if (rulesArr.indexOf(item) === -1) {
+            return false;
+        }
+    }
+    return true;
+}
+
+// 07-06-2022
+
+function toCsvText(array) {
+    return array.map(el => el.join()).join('\n');
+}
+
+// const correctTail = (bod, tail) => bod[bod.length - 1] === tail;
+const correctTail = (bod, tail) => bod.substr(bod.length - 1) === tail;
+
+// 07-07-2022
+
+const nearestSq = n => Math.pow(Math.round(Math.sqrt(n)), 2);
+
+// function capitalizeWord(word) {
+//     let wordArr = word.split('');
+//     wordArr.splice(0, 1, word[0].toUpperCase());
+//     return wordArr.join('')
+// }
+const capitalizeWord = w => `${w[0].toUpperCase()}${w.slice(1)}`;
+
+const reverseList = l => l.reverse();
+
+const setAlarm = (employed, vacation) => employed && !vacation;
+
+String.prototype.digit = function () {
+    return (this.length === 1) && (this[0] >= '0') && (this[0] <= '9');
+};
