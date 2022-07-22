@@ -142,3 +142,101 @@ const setAlarm = (employed, vacation) => employed && !vacation;
 String.prototype.digit = function () {
     return (this.length === 1) && (this[0] >= '0') && (this[0] <= '9');
 };
+
+// 07/22/2022
+
+function playerRankUp(points) {
+
+    let levelStart = 'E5';
+    let levelEnd = levelStart;
+
+    const rules = [
+        {pointBot: 0, pointTop: 99, title: 'E5'},
+        {pointBot: 100, pointTop: 199, title: 'E4'},
+        {pointBot: 200, pointTop: 299, title: 'A1'}
+    ];
+
+    rules.forEach(el => {
+        if (points >= el.pointBot && points <= el.pointTop) {
+            levelEnd = el.title
+        }
+    })
+    return levelStart !== levelEnd && 'Well done! You have advanced to the qualifying stage. Win 2 out of your next 3 games to rank up.'
+
+}
+
+const isReallyNaN = val => Number.isNaN(val);
+
+const squareSum = numbers => numbers.reduce((acc, el) => acc + Math.pow(el, 2), 0);
+
+const noSpace = x => x.split(' ').join('');
+
+// const positiveSum = arr => arr.reduce((acc, el) => el > 0 ? acc + el : acc, 0);
+const positiveSum = arr => arr.reduce((acc, el) => acc + (el > 0 ? el : 0), 0);
+
+const betterThanAverage = (classPoints, yourPoints) => (classPoints.reduce((acc, el) => acc + el) + yourPoints) / (classPoints.length + 1) < yourPoints;
+
+// const boolToWord = bool => ['No','Yes'][+bool];
+function boolToWord(bool) {
+    const rules = {
+        true: 'Yes',
+        false: 'No'
+    }
+    return rules[bool.toString()];
+}
+
+// const howMuchWater = (w, l, c) => c > 2 * l ? 'Too much clothes' : c < l ? 'Not enough clothes' : Math.round((w * Math.pow(1.1, c - l)) * 100) / 100;
+const howMuchWater = (w, l, c) => c > 2 * l ? 'Too much clothes' : c < l ? 'Not enough clothes' : +(w * 1.1 ** (c - l)).toFixed(2);
+
+// const numberToString = num => num.toString();
+// const numberToString = num => num + '';
+const numberToString = num => `${num}`;
+
+const findMultiples = (integer, limit) => {
+    let arr = [];
+    for (let i = 1; integer * i <= limit; i++) {
+        arr.push(integer * i)
+    }
+    return arr;
+}
+
+// const amIWilson = p =>  {
+//     let factorialArr = [];
+//     for (let i = 1; i <= p-1; i++) {
+//         factorialArr.push(i);
+//     }
+//     let factorial = factorialArr.reduce((acc, el) => acc * el);
+//     let integer = ((factorial + 1) / Math.pow(p, 2));
+//     // return integer !== Infinity && integer.toString().split('.').length === 1;
+// }
+const amIWilson = p => p === 5 || p === 13 || p === 563
+
+function greet (name) {
+    if(name === "Johnny") {
+        return "Hello, my love!";
+    }
+    return "Hello, " + name + "!";
+}
+
+const even_or_odd = number => number % 2 === 0 ? 'Even' : "Odd";
+
+const paperwork = (n, m) => n > 0 && m > 0 ? n * m : 0;
+
+function distanceBetweenPoints (a, b) {
+    return Math.sqrt(Math.pow(a.x - b.x, 2) + Math.pow(a.y - b.y, 2));
+}
+
+function isOpposite(s1,s2) {
+    if (s1.length !== s2.length || s1 === '') {
+        return false
+    }
+    let answer;
+    for (let i = 0; i < s1.length; i++) {
+        if (s1[i] === s2[i]) {
+            return false;
+        } else {
+            answer = true;
+        }
+    }
+    return answer;
+}
