@@ -240,3 +240,56 @@ function isOpposite(s1,s2) {
     }
     return answer;
 }
+
+// 07/28/2022
+
+function arrowArea(a,b) {
+    return a * b / 4
+}
+
+function reverseList1 (arr) {
+    arr.reverse();
+    return arr;
+}
+
+// function divCon(arr){
+//     let sumOfNum = 0;
+//     let sumOfString = 0;
+//
+//     for (let el of arr) {
+//         typeof el === "number" ? sumOfNum += el : sumOfString += +el;
+//     }
+//
+//     return sumOfNum - sumOfString;
+// };
+const divCon = arr => arr.reduce((acc, el) => typeof el === 'number' ? acc += el : acc -= +el, 0);
+
+const smallEnough = (a, limit) => {
+    let answer = true
+    for (let el of a) {
+        if (el > limit) {
+            answer = false;
+            break;
+        }
+    }
+    return answer;
+};
+
+const getMiddle = s => s.split('').splice(Math.trunc(s.length/2) - (s.length % 2 ? 0 : 1), s.length % 2 ? 1 : 2).join('');
+
+function removeRotten(bagOfFruits){
+    if (bagOfFruits && bagOfFruits.length) {
+        return bagOfFruits.map(el => el.replace(/rotten/g, '').toLowerCase());
+    }
+    return [];
+}
+
+function fusc (n){
+    if (n === 0) return 0;
+    if (n === 1) return 1;
+    if (n % 2 === 0) return fusc(n / 2);
+    if (n % 2 === 1) return (fusc(Math.trunc(n / 2)) + fusc(Math.trunc(n / 2) + 1));
+}
+
+
+
