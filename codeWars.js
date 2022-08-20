@@ -211,8 +211,8 @@ const findMultiples = (integer, limit) => {
 // }
 const amIWilson = p => p === 5 || p === 13 || p === 563
 
-function greet (name) {
-    if(name === "Johnny") {
+function greet(name) {
+    if (name === "Johnny") {
         return "Hello, my love!";
     }
     return "Hello, " + name + "!";
@@ -222,11 +222,11 @@ const even_or_odd = number => number % 2 === 0 ? 'Even' : "Odd";
 
 const paperwork = (n, m) => n > 0 && m > 0 ? n * m : 0;
 
-function distanceBetweenPoints (a, b) {
+function distanceBetweenPoints(a, b) {
     return Math.sqrt(Math.pow(a.x - b.x, 2) + Math.pow(a.y - b.y, 2));
 }
 
-function isOpposite(s1,s2) {
+function isOpposite(s1, s2) {
     if (s1.length !== s2.length || s1 === '') {
         return false
     }
@@ -243,11 +243,11 @@ function isOpposite(s1,s2) {
 
 // 07/28/2022
 
-function arrowArea(a,b) {
+function arrowArea(a, b) {
     return a * b / 4
 }
 
-function reverseList1 (arr) {
+function reverseList1(arr) {
     arr.reverse();
     return arr;
 }
@@ -275,21 +275,134 @@ const smallEnough = (a, limit) => {
     return answer;
 };
 
-const getMiddle = s => s.split('').splice(Math.trunc(s.length/2) - (s.length % 2 ? 0 : 1), s.length % 2 ? 1 : 2).join('');
+const getMiddle = s => s.split('').splice(Math.trunc(s.length / 2) - (s.length % 2 ? 0 : 1), s.length % 2 ? 1 : 2).join('');
 
-function removeRotten(bagOfFruits){
+function removeRotten(bagOfFruits) {
     if (bagOfFruits && bagOfFruits.length) {
         return bagOfFruits.map(el => el.replace(/rotten/g, '').toLowerCase());
     }
     return [];
 }
 
-function fusc (n){
+function fusc(n) {
     if (n === 0) return 0;
     if (n === 1) return 1;
     if (n % 2 === 0) return fusc(n / 2);
     if (n % 2 === 1) return (fusc(Math.trunc(n / 2)) + fusc(Math.trunc(n / 2) + 1));
 }
 
+// const orderedCount = (text) => {
+//     let arr = text.split('');
+//     let answer = [];
+//     let arrOfLetters = [];
+//     for (let i = 0; i < arr.length; i++) {
+//         if (!arrOfLetters.includes(arr[i])) {
+//             arrOfLetters.push(arr[i]);
+//             answer.push([arr[i], 1]);
+//         } else {
+//             answer[arrOfLetters.indexOf(arr[i])][1]++;
+//         }
+//     }
+//     return answer;
+// }
+const orderedCountBeta = (text) => {
+    let arr = text.split('').sort();
+    let answer = [[arr[0], 1]];
+    for (let i = 1; i < arr.length; i++) {
+        if (arr[i] === arr[i - 1]) {
+            answer[answer.length - 1][1]++;
+        } else {
+            answer.push([arr[i], 1]);
+        }
+    }
+    return arr;
+}
 
+const orderedCount = (text) => {
+    let letters = text.split("")
+    let result = letters.filter((letter, index) => letters.indexOf(letter) == index)
+    return result.map((letter) => [letter, text.split(letter).length - 1])
+}
+
+// 08-01-2022
+
+function printerError(s) {
+    const errLetters = 'nopqrstuvwxyz'.split('');
+    let errCounter = 0;
+    for (let i = 0; i < s.length; i++) {
+        errLetters.includes(s[i]) && errCounter++;
+    }
+    return `${errCounter}/${s.length}`;
+}
+
+const digits = n => n.toString().length;
+
+// 08-09-2022
+
+const last = xs => xs.length !== 0 ? xs.reverse()[0] : null;
+
+const towerOfHanoi = rings => Math.pow(2, rings) - 1;
+
+const fibsFizzBuzz = n => {
+    let arr = [];
+    for (let j = 0; j < n; j++) {
+        if (j < 2) {
+            arr[j] = 1;
+        } else {
+            arr[j] = arr[j - 2] + arr[j - 1];
+        }
+    }
+    let answerArr = [];
+    for (let i = 0; i < arr.length; i++) {
+        if (arr[i] % 3 === 0 && arr[i] % 5 === 0) {
+            answerArr[i] = 'FizzBuzz';
+        } else if (arr[i] % 3 === 0) {
+            answerArr[i] = 'Fizz';
+        } else if (arr[i] % 5 === 0) {
+            answerArr[i] = 'Buzz';
+        } else {
+            answerArr[i] = arr[i];
+        }
+    }
+    return answerArr
+};
+
+// 08-20-2022
+
+const leastLarger = (arr, i) => {
+    let arrForSearch = [...arr].sort((a, b) => a - b).filter((element, index, array) => array.indexOf(element) === index);
+    let numIn = arr[i];
+    let indexInArrForSearch = arrForSearch.indexOf(numIn);
+    if (indexInArrForSearch < arrForSearch.length - 1) {
+        let numOut = arrForSearch[indexInArrForSearch + 1];
+        return arr.indexOf(numOut);
+    } else {
+        return -1;
+    }
+};
+
+function Block(data) {
+    this.width = data[0];
+    this.length = data[1];
+    this.height = data[2];
+    
+    this.getWidth = function() {
+        return this.width;
+    }
+    this.getLength = function () {
+        return this.length;
+    }
+    this.getHeight = function () {
+        return this.height;
+    }
+    this.getVolume = function () {
+        return this.width * this.length * this.height;
+    }
+    this.getSurfaceArea = function () {
+        return 2 * (this.height + this.width) * this.length + 2 * this.height * this.width;
+    }
+}
+
+let block = new Block([2,4,6]);
+console.log(block.getSurfaceArea());
 
