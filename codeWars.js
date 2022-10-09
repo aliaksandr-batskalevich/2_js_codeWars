@@ -385,8 +385,8 @@ function Block(data) {
     this.width = data[0];
     this.length = data[1];
     this.height = data[2];
-    
-    this.getWidth = function() {
+
+    this.getWidth = function () {
         return this.width;
     }
     this.getLength = function () {
@@ -403,6 +403,160 @@ function Block(data) {
     }
 }
 
-let block = new Block([2,4,6]);
-console.log(block.getSurfaceArea());
+// 09/25/2022
 
+function alexMistakes(numberOfKata, timeLimit) {
+    let timeForMistakes = timeLimit - (60 / 10 * numberOfKata);
+    let timeForPushUps = 5;
+    let numOfMistakes = 0;
+    while (timeForMistakes - timeForPushUps >= 0) {
+        numOfMistakes++;
+        timeForMistakes -= timeForPushUps;
+        timeForPushUps *= 2;
+    }
+    return numOfMistakes;
+}
+
+function rangeBitCount(a, b) {
+    const trueA = Math.ceil(a);
+    const trueB = Math.floor(b);
+    let numArr = [];
+    for (let i = trueA; i <= trueB; i++) {
+        numArr.push(i.toString(2));
+    }
+    let fullString = numArr.join('');
+    let answer = fullString.split('1').length - 1;
+    return answer;
+}
+
+function SeriesSum(n){
+    let divider = 1;
+    let answer = 0;
+    if (n === 0) {
+        return '0.00';
+    } else {
+        for (let i = 1; i <= n ; i++) {
+            answer += 1 / divider;
+            divider += 3;
+        }
+    }
+    return String(answer.toFixed(2));
+}
+
+function solution(start, finish){
+    let position = start;
+    let jumpNum = 0;
+    const smallJump = 1;
+    const longJump = 3;
+    while (position !== finish) {
+        if (position + longJump <= finish) {
+            position += longJump
+        } else {
+            position += smallJump;
+        }
+        jumpNum++;
+    }
+    return jumpNum;
+}
+
+function nameThatNumber(num) {
+    const rules = {
+        '0': 'zero',
+        '1': 'one',
+        '2': 'two',
+        '2x': 'twen',
+        '3': 'three',
+        '3x': 'thir',
+        '4': 'four',
+        '4x': 'for',
+        '5': 'five',
+        '5x': 'fif',
+        '6': 'six',
+        '7': 'seven',
+        '8': 'eight',
+        '8x': 'eigh',
+        '9': 'nine',
+        '10': 'ten',
+        '11': 'eleven',
+        '12': 'twelve',
+        '1x': 'teen',
+        'tens': 'ty',
+    }
+    if (String(num).length === 1 || num === 10 || num === 11 || num === 12) {
+        return rules[String(num)];
+    } else if (Math.floor(num / 10) === 1 && (num % 10 === 3 || num % 10 === 5 || num % 10 === 8)) {
+        return `${rules[`${num % 10}x`]}${rules['1x']}`;
+    } else if (Math.floor(num / 10) === 1) {
+        return `${rules[String(num % 10)]}${rules['1x']}`;
+    } else if (num % 10 === 0 && (Math.floor(num / 10) === 2 || Math.floor(num / 10) === 3 || Math.floor(num / 10) === 4 || Math.floor(num / 10) === 5 || Math.floor(num / 10) === 8)) {
+        return `${rules[`${String(Math.floor(num / 10))}x`]}${rules['tens']}`;
+    } else if (num % 10 === 0) {
+        return `${rules[String(Math.floor(num / 10))]}${rules['tens']}`
+    } else if (Math.floor(num / 10) === 2 || Math.floor(num / 10) === 3 || Math.floor(num / 10) === 4 || Math.floor(num / 10) === 5 || Math.floor(num / 10) === 8) {
+        return `${rules[`${String(Math.floor(num / 10))}x`]}${rules['tens']} ${rules[`${num % 10}`]}`;
+    } else {
+        return `${rules[`${String(Math.floor(num / 10))}`]}${rules['tens']} ${rules[`${num % 10}`]}`;
+    }
+}
+
+function hammingDistance (a, b) {
+    let first
+    let second
+    let answer = 0;
+    if (a.length <= b.length) {
+        first = a;
+        second = b;
+    } else {
+        first = b;
+        second = a;
+    }
+    answer += b.length - a.length;
+    for (let i = 0; i < a.length; i++) {
+        if (a[i] !== b[i]) {
+            answer++;
+        }
+    }
+    return answer;
+}
+
+function isTriangle(a,b,c) {
+    return a * b * c !== 0 && a < b + c && b < a + c && c < a + b
+}
+
+// 10-09/2022
+
+function range(...rest) {
+    let start = 0;
+    let stop = 0;
+    let step = 1;
+
+    let answer = [];
+
+    if (rest.length === 1) {
+        stop = rest[0];
+    } else if (rest.length === 2) {
+        [start, stop] = rest;
+    } else {
+        [start, stop, step] = rest;
+    }
+
+    if (stop < start) {
+        return answer
+    } else if (step === 0) {
+        for (let i = start; i < stop; i++) {
+            answer.push(start);
+        }
+    } else {
+        for (let i = start; i < stop; i+= step) {
+            answer.push(i);
+        }
+    }
+    return answer
+}
+
+function isLeapYear(duration, year) {
+    let period = 1 / (duration - Math.trunc(duration));
+    return year % period === 0;
+}
+
+console.log(isLeapYear(365.25, 2018))
