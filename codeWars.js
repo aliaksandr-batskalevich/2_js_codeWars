@@ -429,13 +429,13 @@ function rangeBitCount(a, b) {
     return answer;
 }
 
-function SeriesSum(n){
+function SeriesSum(n) {
     let divider = 1;
     let answer = 0;
     if (n === 0) {
         return '0.00';
     } else {
-        for (let i = 1; i <= n ; i++) {
+        for (let i = 1; i <= n; i++) {
             answer += 1 / divider;
             divider += 3;
         }
@@ -443,7 +443,7 @@ function SeriesSum(n){
     return String(answer.toFixed(2));
 }
 
-function solution(start, finish){
+function solution(start, finish) {
     let position = start;
     let jumpNum = 0;
     const smallJump = 1;
@@ -499,7 +499,7 @@ function nameThatNumber(num) {
     }
 }
 
-function hammingDistance (a, b) {
+function hammingDistance(a, b) {
     let first
     let second
     let answer = 0;
@@ -519,7 +519,7 @@ function hammingDistance (a, b) {
     return answer;
 }
 
-function isTriangle(a,b,c) {
+function isTriangle(a, b, c) {
     return a * b * c !== 0 && a < b + c && b < a + c && c < a + b
 }
 
@@ -547,7 +547,7 @@ function range(...rest) {
             answer.push(start);
         }
     } else {
-        for (let i = start; i < stop; i+= step) {
+        for (let i = start; i < stop; i += step) {
             answer.push(i);
         }
     }
@@ -559,4 +559,118 @@ function isLeapYear(duration, year) {
     return year % period === 0;
 }
 
-console.log(isLeapYear(365.25, 2018))
+// fetch('https://api.github.com/users/aliaksandr-batskalevich')
+//     .then(response => {
+//         if (response.ok) {
+//             return response.json();
+//         } else {
+//             alert('User not found')
+//         }
+//     })
+//     .then(response => {
+//         console.log(response.id)
+//     })
+//     .catch(error => {
+//         console.log(error);
+//     })
+
+
+// 10/14/2022
+
+const menStillStanding = (cards) => {
+
+    // console.log(cards);
+
+    let removePlayers = {A: [], B: []};
+
+    // create teams
+    let teams = {
+        A: {},
+        B: {}
+    }
+    let teamsArr = Object.keys(teams);
+    for (let j of teamsArr) {
+        for (let i = 1; i < 12; i++) {
+            teams[j][String(i)] = {number: i, Y: 0, R: 0}
+        }
+    }
+
+    // create answer
+    const createAnswer = () => {
+        return [11 - removePlayers.A.length, 11 - removePlayers.B.length]
+    }
+
+    // action
+    if (cards.length) {
+        for (let i = 0; i < cards.length; i++) {
+            let card = {
+                team: cards[i][0],
+                player: cards[i].length === 3 ? cards[i][1] : cards[i].slice(1, 3),
+                color: cards[i][cards[i].length - 1]
+            }
+            let player = teams[card.team][card.player];
+            if (player.Y < 2 && player.R === 0) {
+                player[card.color]++;
+                if (player.Y === 2 || player.R === 1) {
+                    removePlayers[card.team].push(card.player);
+                    if (removePlayers.A.length === 5 || removePlayers.B.length === 5) {
+                        break;
+                    }
+                }
+            }
+        }
+    }
+    return createAnswer();
+}
+
+const toFixed = (num, fix) => {
+    if (!isFinite(num)) {
+        console.error(`Error!!! ${num} - is not a number!!!`)
+    } else {
+        num = +num;
+        return num.toFixed(fix);
+    }
+}
+
+// async function userAbout(apiUrl, key) {
+//     let userPr = fetch(apiUrl)
+//         .then(response => {
+//             if (response.ok) {
+//                 return response.json();
+//             } else {
+//                 throw new Error(`No user at url: ${apiUrl}`);
+//             }
+//         })
+//         .catch(error => {
+//             throw(error);
+//         })
+//     let user = await userPr;
+//     let keys = Object.keys(user);
+//     if (keys.includes(key)) {
+//         return console.log(user[key]);
+//     } else {
+//         throw new Error(`No key in object! Select from: ${keys.join(', ')}`)
+//     }
+// }
+
+// 11/03/2022
+
+function comp(a, b) {
+    return !!a && !!b && a.map(x => x*x).sort().join() == b.sort().join();
+}
+
+// function solution(number){
+//     if (number < 0) {
+//         return 0;
+//     }
+//     let arrOfNum = [];
+//     for (let i = 0; i < number; i++) {
+//         arrOfNum.push(i);
+//     }
+//     return arrOfNum.reduce((acc, el) => el % 3 === 0 || el % 5 === 0 ? acc + el : acc, 0)
+// }
+function solution(number){
+    return number < 0 ? 0 : [...Array(number)].map((el, i) => i).reduce((acc, el) => !(el % 3) || !(el % 5) ? acc + el : acc, 0);
+}
+
+const spinWords = s => s.split(' ').map(el => el.length > 4 ? el.split('').reverse().join('') : el).join(' ');
