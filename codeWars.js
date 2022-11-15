@@ -656,7 +656,7 @@ const toFixed = (num, fix) => {
 // 11/03/2022
 
 function comp(a, b) {
-    return !!a && !!b && a.map(x => x*x).sort().join() == b.sort().join();
+    return !!a && !!b && a.map(x => x * x).sort().join() == b.sort().join();
 }
 
 // function solution(number){
@@ -669,8 +669,94 @@ function comp(a, b) {
 //     }
 //     return arrOfNum.reduce((acc, el) => el % 3 === 0 || el % 5 === 0 ? acc + el : acc, 0)
 // }
-function solution(number){
+function solution(number) {
     return number < 0 ? 0 : [...Array(number)].map((el, i) => i).reduce((acc, el) => !(el % 3) || !(el % 5) ? acc + el : acc, 0);
 }
 
 const spinWords = s => s.split(' ').map(el => el.length > 4 ? el.split('').reverse().join('') : el).join(' ');
+
+// 04/11/2022
+
+const findOdd = (arr) => {
+    const uniqueArrayElements = array => array.filter((el, index, array) => array.indexOf(el) === index);
+    const uniqArr = uniqueArrayElements(arr);
+    for (const i of uniqArr) {
+        let count = 0;
+        arr.forEach(el => {
+            el === i && count++;
+        })
+        if (count % 2 !== 0) {
+            return i;
+        }
+    }
+};
+
+const digitalRoot = n => String(n).length === 1 ? n : digitalRoot(String(n).split('').reduce((acc, el) => acc + +el, 0));
+
+
+// 11/15/2022
+
+// function likes(namesArr) {
+//     let answerArr = ['no one', namesArr.length > 1 ? 'like this' : 'likes this'];
+//     if (namesArr.length) {
+//         answerArr[0] = [...namesArr];
+//         if (answerArr[0].length < 3) {
+//             answerArr[0] = answerArr[0].join(' and ');
+//         } else {
+//             let lastChild = answerArr[0].length === 3 ? answerArr[0][2] : `${namesArr.length - 2} others`;
+//             answerArr[0] = answerArr[0].slice(0, 2);
+//             answerArr[0] = `${answerArr[0].join(', ')} and ${lastChild}`;
+//         }
+//     }
+//     return answerArr.join(' ');
+// }
+function likes(namesArr) {
+    switch (namesArr.length) {
+        case 0:
+            return `no one likes this`;
+        case 1:
+            return `${namesArr.join()} likes this`;
+        case 2:
+            return `${namesArr.join(' and ')} like this`;
+        case 3:
+            return `${namesArr[0]}, ${namesArr[1]} and ${namesArr[2]} like this`;
+        default:
+            return `${namesArr[0]}, ${namesArr[1]} and ${namesArr.length - 2} others like this`
+    }
+}
+
+// function createPhoneNumber(numbers){
+//     let code = `(${numbers.slice(0, 3).join('')})`;
+//     let first = numbers.slice(3, 6).join('');
+//     let second = numbers.slice(6,11).join('');
+//     let number = [first, second].join('-');
+//     let phoneNumber = [code, number].join(' ');
+//     return phoneNumber;
+// }
+function createPhoneNumber(numbers){
+    let format = '(xxx) xxx-xxxx';
+    numbers.forEach(el => {
+        format = format.replace('x', el);
+    })
+    return format;
+}
+
+const countBits = function(n) {
+    let twoDigits = n.toString(2);
+    return twoDigits.split('1').length - 1;
+};
+const countBitsShort = (n) => n.toString(2).split('1').length - 1;
+
+function duplicateCount(text){
+    let textArr = text.toLowerCase().split('');
+    let duplicateArr = textArr.filter((el, index, arr) => arr.indexOf(el) !== index);
+    let duplicateArrUniq = duplicateArr.filter((el, index, arr) => arr.indexOf(el) === index);
+    return duplicateArrUniq.length;
+};
+
+function duplicateEncode(word){
+    let wordArr = word.toLowerCase().split('');
+    let notUniqArr = wordArr.filter((el, index, arr) => arr.indexOf(el) !== index);
+    let answerArr = wordArr.map(el => notUniqArr.includes(el) ? ')' : '(')
+    return answerArr.join('');
+}
