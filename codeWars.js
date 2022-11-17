@@ -733,7 +733,7 @@ function likes(namesArr) {
 //     let phoneNumber = [code, number].join(' ');
 //     return phoneNumber;
 // }
-function createPhoneNumber(numbers){
+function createPhoneNumber(numbers) {
     let format = '(xxx) xxx-xxxx';
     numbers.forEach(el => {
         format = format.replace('x', el);
@@ -741,22 +741,142 @@ function createPhoneNumber(numbers){
     return format;
 }
 
-const countBits = function(n) {
+const countBits = function (n) {
     let twoDigits = n.toString(2);
     return twoDigits.split('1').length - 1;
 };
 const countBitsShort = (n) => n.toString(2).split('1').length - 1;
 
-function duplicateCount(text){
+function duplicateCount(text) {
     let textArr = text.toLowerCase().split('');
     let duplicateArr = textArr.filter((el, index, arr) => arr.indexOf(el) !== index);
     let duplicateArrUniq = duplicateArr.filter((el, index, arr) => arr.indexOf(el) === index);
     return duplicateArrUniq.length;
 };
 
-function duplicateEncode(word){
+function duplicateEncode(word) {
     let wordArr = word.toLowerCase().split('');
     let notUniqArr = wordArr.filter((el, index, arr) => arr.indexOf(el) !== index);
     let answerArr = wordArr.map(el => notUniqArr.includes(el) ? ')' : '(')
     return answerArr.join('');
 }
+
+// 11/16/2022
+
+const isValidWalk = (walk) => {
+    let x = walk.filter(el => el === 'n').length - walk.filter(el => el === 's').length;
+    let y = walk.filter(el => el === 'e').length - walk.filter(el => el === 'w').length;
+    return x === 0 && y === 0 && walk.length === 10;
+}
+
+function alphabetPosition(text) {
+    let alphabet = 'abcdefghijklmnopqrstuvwxyz';
+    let alphabetArr = ['', ...alphabet.split('')];
+    let answerArr = text.toLowerCase().split('').map(el => alphabetArr.indexOf(el)).filter(el => el !== -1);
+
+    return answerArr.join(' ');
+}
+
+function persistence(num, count = 0) {
+    if (String(num).length === 1) return count;
+    return persistence(String(num).split('').reduce((acc, el) => acc * el), count + 1);
+}
+
+function order(words){
+    let wordsArr = words.split(' ');
+    let sortWordsArr = wordsArr.sort((a, b) => a.split('').filter(el => isFinite(el)) - b.split('').filter(el => isFinite(el)));
+    return sortWordsArr.join(' ');
+}
+
+function tribonacci(signature,n){
+    if (!n) return [];
+    for (let i = 3; i < n; i++) {
+        signature.push(signature[i - 3] + signature[i - 2] + signature[i - 1]);
+    }
+    signature.length = n;
+    return signature;
+}
+
+function toCamelCase(str){
+    console.log(str)
+    let universalStr = str.replace(/-/g, ' ');
+    universalStr = universalStr.replace(/_/g, ' ');
+    let strArr = universalStr.split(' ');
+    for (let i = 1; i < strArr.length; i++) {
+        strArr[i] = strArr[i].split('').map((el, index) => index === 0 ? el.toUpperCase() : el).join('');
+    }
+    return strArr.join('');
+}
+
+const uniqueInOrder = function(iterable) {
+    let iterableArr = Array.isArray(iterable) ? iterable : iterable.split('');
+    let iterableFilterArr = iterableArr.filter((el, index, array) => {
+        if (index) {
+            return el !== array[index - 1]
+        } else
+            return true
+    })
+    return iterableFilterArr;
+}
+
+const decodeMorse = function(morseCode){
+    const MORSE_TABLE = {
+        "-----":"0",
+        ".----":"1",
+        "..---":"2",
+        "...--":"3",
+        "....-":"4",
+        ".....":"5",
+        "-....":"6",
+        "--...":"7",
+        "---..":"8",
+        "----.":"9",
+
+        ".-":"a",
+        "-...":"b",
+        "-.-.":"c",
+        "-..":"d",
+        ".":"e",
+        "..-.":"f",
+        "--.":"g",
+        "....":"h",
+        "..":"i",
+        ".---":"j",
+        "-.-":"k",
+        ".-..":"l",
+        "--":"m",
+        "-.":"n",
+        "---":"o",
+        ".--.":"p",
+        "--.-":"q",
+        ".-.":"r",
+        "...":"s",
+        "-":"t",
+        "..-":"u",
+        "...-":"v",
+        ".--":"w",
+        "-..-":"x",
+        "-.--":"y",
+        "--..":"z",
+
+        "/":" ",
+        "-.-.--":"!",
+        ".-.-.-":".",
+        "--..--":",",
+
+        "...---...": 'SOS',
+    };
+    const decoder = (code) => MORSE_TABLE[code];
+
+    let morseCodeArrOutside = morseCode.split('   ');
+
+    let phraseArr = morseCodeArrOutside.map(el => {
+        let morseCodeArrInside = el.split(' ');
+        let word = morseCodeArrInside.map(el => decoder(el)).join('').toUpperCase();
+        return word;
+    })
+    let phrase = phraseArr.join(' ').trim();
+    return phrase;
+}
+
+console.log(decodeMorse('   .... . -.--   '));
