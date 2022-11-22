@@ -782,13 +782,13 @@ function persistence(num, count = 0) {
     return persistence(String(num).split('').reduce((acc, el) => acc * el), count + 1);
 }
 
-function order(words){
+function order(words) {
     let wordsArr = words.split(' ');
     let sortWordsArr = wordsArr.sort((a, b) => a.split('').filter(el => isFinite(el)) - b.split('').filter(el => isFinite(el)));
     return sortWordsArr.join(' ');
 }
 
-function tribonacci(signature,n){
+function tribonacci(signature, n) {
     if (!n) return [];
     for (let i = 3; i < n; i++) {
         signature.push(signature[i - 3] + signature[i - 2] + signature[i - 1]);
@@ -797,7 +797,7 @@ function tribonacci(signature,n){
     return signature;
 }
 
-function toCamelCase(str){
+function toCamelCase(str) {
     console.log(str)
     let universalStr = str.replace(/-/g, ' ');
     universalStr = universalStr.replace(/_/g, ' ');
@@ -808,7 +808,7 @@ function toCamelCase(str){
     return strArr.join('');
 }
 
-const uniqueInOrder = function(iterable) {
+const uniqueInOrder = function (iterable) {
     let iterableArr = Array.isArray(iterable) ? iterable : iterable.split('');
     let iterableFilterArr = iterableArr.filter((el, index, array) => {
         if (index) {
@@ -819,50 +819,50 @@ const uniqueInOrder = function(iterable) {
     return iterableFilterArr;
 }
 
-const decodeMorse = function(morseCode){
+const decodeMorse = function (morseCode) {
     const MORSE_TABLE = {
-        "-----":"0",
-        ".----":"1",
-        "..---":"2",
-        "...--":"3",
-        "....-":"4",
-        ".....":"5",
-        "-....":"6",
-        "--...":"7",
-        "---..":"8",
-        "----.":"9",
+        "-----": "0",
+        ".----": "1",
+        "..---": "2",
+        "...--": "3",
+        "....-": "4",
+        ".....": "5",
+        "-....": "6",
+        "--...": "7",
+        "---..": "8",
+        "----.": "9",
 
-        ".-":"a",
-        "-...":"b",
-        "-.-.":"c",
-        "-..":"d",
-        ".":"e",
-        "..-.":"f",
-        "--.":"g",
-        "....":"h",
-        "..":"i",
-        ".---":"j",
-        "-.-":"k",
-        ".-..":"l",
-        "--":"m",
-        "-.":"n",
-        "---":"o",
-        ".--.":"p",
-        "--.-":"q",
-        ".-.":"r",
-        "...":"s",
-        "-":"t",
-        "..-":"u",
-        "...-":"v",
-        ".--":"w",
-        "-..-":"x",
-        "-.--":"y",
-        "--..":"z",
+        ".-": "a",
+        "-...": "b",
+        "-.-.": "c",
+        "-..": "d",
+        ".": "e",
+        "..-.": "f",
+        "--.": "g",
+        "....": "h",
+        "..": "i",
+        ".---": "j",
+        "-.-": "k",
+        ".-..": "l",
+        "--": "m",
+        "-.": "n",
+        "---": "o",
+        ".--.": "p",
+        "--.-": "q",
+        ".-.": "r",
+        "...": "s",
+        "-": "t",
+        "..-": "u",
+        "...-": "v",
+        ".--": "w",
+        "-..-": "x",
+        "-.--": "y",
+        "--..": "z",
 
-        "/":" ",
-        "-.-.--":"!",
-        ".-.-.-":".",
-        "--..--":",",
+        "/": " ",
+        "-.-.--": "!",
+        ".-.-.-": ".",
+        "--..--": ",",
 
         "...---...": 'SOS',
     };
@@ -879,4 +879,307 @@ const decodeMorse = function(morseCode){
     return phrase;
 }
 
-console.log(decodeMorse('   .... . -.--   '));
+function narcissistic(value) {
+    return String(value).split('').reduce((acc, el, index, arr) => acc + (+el) ** arr.length, 0) === value;
+}
+
+function isPangram(phrase) {
+    const uniqueArrayElements = array => array.filter((el, index, array) => array.indexOf(el) === index);
+    let alphabet = 'abcdefghijklmnopqrstuvwxyz';
+    let alphabetArr = alphabet.split('');
+    let lettersArr = phrase.toLowerCase().split('').filter(el => alphabetArr.includes(el));
+    let uniqLettersArr = uniqueArrayElements(lettersArr);
+    return alphabetArr.length === uniqLettersArr.length;
+}
+
+function isPangramBeta(phrase) {
+    let alphabetArr = 'abcdefghijklmnopqrstuvwxyz'.split('');
+    let phraseArr = phrase.toLowerCase().split('');
+    let answer = alphabetArr.every(el => phraseArr.includes(el));
+    return answer;
+}
+
+function findUniq1(arr) {
+    let sortArr = arr.sort((a, b) => a - b);
+    switch (arr[0] - arr[1]) {
+        case 0:
+            return arr[arr.length - 1]
+        default:
+            return arr[0];
+    }
+}
+
+function findUniq2(arr) {
+
+    let sortArr = arr
+        .map(el => el.toLowerCase().replace(/ /g, '')
+            .split('')
+            .filter((el, index, arr) => arr.indexOf(el) === index)
+            .sort((a, b) => a[0] < b[0] ? -1 : 1)
+            .join('')
+        )
+        .sort((a, b) => a > b ? 1 : -1);
+
+    let other = sortArr[0] !== sortArr[1] ? sortArr[0] : sortArr[sortArr.length - 1];
+
+    let answer = arr.find(arrEl => {
+        if (other === '') {
+            return arrEl.trim() === '';
+        }
+        return other.split('').every(otherEl => {
+            return arrEl.toLowerCase().split('').includes(otherEl);
+        });
+    });
+
+    return answer;
+}
+
+function findUniq(arr) {
+    console.log(arr)
+
+    for (let item of arr) {
+        if (typeof (item) !== 'number' || item === NaN) break;
+        if (arr[0] - item !== 0) return item;
+    }
+    // test other type
+
+    let elementsTypeArr = arr.map(el => typeof (el)).sort((a, b) => a < b ? -1 : 1);
+
+    if (elementsTypeArr[0] !== elementsTypeArr[elementsTypeArr.length - 1]) {
+        let other = elementsTypeArr[0] === elementsTypeArr[1]
+            ? elementsTypeArr[elementsTypeArr.length - 1]
+            : elementsTypeArr[0];
+
+        return arr.find(el => typeof (el) === other);
+    } else if (elementsTypeArr[0] === 'object' && elementsTypeArr[elementsTypeArr.length - 1] === 'object') {
+
+        let isAllArraysArr = arr.map(el => Array.isArray(el)).sort((a, b) => a < b ? -1 : 1);
+
+        let isAllArrays = isAllArraysArr[0] === isAllArraysArr[isAllArraysArr.length - 1];
+
+        if (!isAllArrays) {
+
+            let otherType = (isAllArraysArr[0] === isAllArraysArr[1] ? isAllArraysArr[isAllArraysArr.length - 1] : isAllArraysArr[0])
+                ? 'array' : 'object';
+
+            return arr.find(el => otherType === 'array' ? Array.isArray(el) : !Array.isArray(el))
+        } else {
+
+            return arr[0];
+        }
+
+    } else {
+        let sortArr = arr.sort((a, b) => a - b)
+        let answer = sortArr[0] === sortArr[1] ? sortArr[sortArr.length - 1] : sortArr[0];
+        return answer;
+    }
+}
+
+function solution(str) {
+    if (str.length % 2) str = str.concat('_');
+    let answer = [];
+    for (let i = 0; i < str.length; i += 2) {
+        answer.push(str[i] + str[i + 1]);
+    }
+    return answer
+}
+
+function findMissingLetter(array) {
+    const LOWER_CASE = 'LOWER_CASE';
+    const UPPER_CASE = 'UPPER_CASE';
+    let alphabetArr = 'abcdefghijklmnopqrstuvwxyz'.split('');
+    let modeCase = alphabetArr.includes(array[0]) ? LOWER_CASE : UPPER_CASE;
+    if (modeCase === "UPPER_CASE") alphabetArr = alphabetArr.map(el => el.toUpperCase());
+    let startIndex = alphabetArr.indexOf(array[0]);
+    for (let i = startIndex; i < startIndex + array.length; i++) {
+        if (alphabetArr[i] !== array[i - startIndex]) return alphabetArr[i]
+    }
+}
+
+function sortArray(array) {
+    let sortArr = [...array]
+    let oddIndexes = [];
+    let oddNumbers = [];
+    sortArr.forEach((el, index) => {
+        if (el % 2) {
+            oddIndexes.push(index);
+            oddNumbers.push(el);
+        }
+    });
+    let oddNumbersSortArr = oddNumbers.sort((a, b) => a - b);
+    for (let i = 0; i < oddIndexes.length; i++) {
+        sortArr[oddIndexes[i]] = oddNumbersSortArr[i];
+    }
+    return sortArr;
+}
+
+function towerBuilder(nFloors) {
+    let tower = [];
+    for (let i = 0; i < nFloors; i++) {
+        if (nFloors > 0) {
+            tower.push(1 + 2 * i)
+        }
+    }
+    let width = 1 + 2 * nFloors;
+
+    let towerToRender = tower.map(el => {
+        let floor = '';
+        let spaceNum = width - el;
+        for (let i = 1; i <= el; i++) {
+            floor += '*';
+        }
+        for (let i = 1; i < spaceNum / 2; i++) {
+            floor = ` ${floor} `;
+        }
+        return floor;
+    })
+    return towerToRender;
+}
+
+function high(phrase) {
+    let alphabetArr = '!abcdefghijklmnopqrstuvwxyz'.split('');
+    let phraseArr = phrase.split(' ');
+    const getScores = (strArr) => {
+        return strArr.reduce((acc, el) => acc + alphabetArr.indexOf(el), 0)
+    };
+    let wordAndScores = phraseArr.reduce((acc, el) => {
+        let scores = getScores(el.split(''));
+        if (acc[1] < scores) {
+            return [el, scores];
+        } else {
+            return acc;
+        }
+    }, ['', 0]);
+    return wordAndScores[0];
+}
+
+function countSmileys(arr) {
+    let count = 0;
+
+    arr.forEach(el => {
+        switch (el.length) {
+            case 2:
+                (el[0] === ':' || el[0] === ';') && (el[1] === ')' || el[1] === 'D') && count++;
+                break;
+            case 3:
+                (el[0] === ':' || el[0] === ';') && (el[1] === '-' || el[1] === '~') && (el[2] === ')' || el[2] === 'D') && count++;
+                break;
+        }
+    })
+
+    return count;
+}
+
+// 11/19/2022
+
+function findNb(m) {
+    const builder = (floor, value) => {
+        if (value === m) {
+            return floor;
+        } else if (value > m) {
+            return -1;
+        }
+        return builder(floor + 1, value += Math.pow(floor + 1, 3));
+
+    }
+    return builder(0, 0);
+}
+
+function validBraces(braces) {
+    let bracesArr = braces.split('');
+    const rules = {
+        '(': ')',
+        '{': '}',
+        '[': ']',
+    };
+    while (bracesArr.length) {
+        let closesIndexes = bracesArr.map((el, index) => {
+            if (el === '}' || el === ']' || el === ')') return index
+        })
+            .filter(el => el)
+            .sort((a, b) => a - b);
+        if (closesIndexes.length === 0) break;
+        let firstCloseIndex = closesIndexes[0];
+        if (bracesArr[firstCloseIndex] === rules[bracesArr[firstCloseIndex - 1]]) {
+            bracesArr.splice(firstCloseIndex - 1, 2);
+        } else {
+            break
+        }
+    }
+    return !bracesArr.length
+}
+
+
+function isPrime(num) {
+    if (num < 2) return false;
+    for (let i = 2; i <= Math.sqrt(num); i++) {
+        if (num % i === 0) return false;
+    }
+    return true;
+}
+
+function longestConsec(strarr, k) {
+    if (strarr.length === 0 || strarr.length < k || k <= 0) return '';
+    let concatArr = strarr.map((el, index, array) => {
+        let newEl = '';
+        for (let i = 0; i < k ; i++) {
+            newEl += array[index + i];
+        }
+        return newEl;
+    });
+    concatArr.length = concatArr.length - (k - 1);
+    let maxLength = concatArr.reduce((acc, el) => el.length > acc ? el.length : acc, 0);
+    return concatArr.find(el => el.length === maxLength);
+}
+
+function expandedFormPlus(num) {
+    const divisor1000 = (num, acc = '') => {
+        let result = Math.trunc((num / 1000));
+        if (String(result).length < 4) return `${result} ${acc}`;
+        return divisor1000(result, `${result % 1000} ${acc}`)
+    };
+    let answerBefore1000 = String(num % 1000);
+    let answerAfter1000 = '';
+
+    answerBefore1000 = answerBefore1000.split('')
+        .map((el, index, array) => {
+            for (let i = 1; i < array.length - index; i++) {
+                el += 0;
+            }
+            return el;
+    })
+        .filter(el => +el !== 0)
+        .join(' + ');
+
+    if (num / 1000 >= 1) {
+        answerAfter1000 = divisor1000(num).trim().split(' ')
+            .map((el, index, array) => {
+                for (let i = 0; i < array.length - index; i++) {
+                    el += '000';
+                }
+                return el;
+            })
+            .join(' + ');
+    }
+
+    return `${answerAfter1000 && `${answerAfter1000} + `}${answerBefore1000}`;
+}
+
+function expandedForm(num) {
+    let answer;
+    let numArr = String(num).split('');
+    let numArrWithNulls = numArr
+        .map((el, index, array) => {
+        for (let i = 1; i < array.length - index; i++) {
+            el += '0'
+        }
+        return el;
+    })
+        .filter(el => +el);
+
+    return numArrWithNulls.join(' + ')
+}
+
+
+
+console.log(expandedForm(70304));
