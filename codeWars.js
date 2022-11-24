@@ -1180,6 +1180,14 @@ function expandedForm(num) {
     return numArrWithNulls.join(' + ')
 }
 
+function inArray(array1,array2){
+    let array = array1.filter(el1 => {
+        return array2.some(el2 => {
+            return el2.split(el1).length > 1
+        })
+    });
+    return array.sort();
+}
 
 
-console.log(expandedForm(70304));
+console.log(inArray(["xyz", "live", "strong"], ["lively", "alive", "harp", "sharp", "armstrong"]));
