@@ -1189,5 +1189,71 @@ function inArray(array1,array2){
     return array.sort();
 }
 
+function bouncingBall(h,  bounce,  window) {
+    if (h <= 0 || bounce <= 0 || bounce >= 1 || window >= h) return -1;
+    let count = 0;
+    for (let i = h; i > window ; i *= bounce) {
+        count+= i*bounce > window ? 2 : 1;
+    }
+    return count;
+}
 
-console.log(inArray(["xyz", "live", "strong"], ["lively", "alive", "harp", "sharp", "armstrong"]));
+function solution(string) {
+    return string.split('').map(el => el.toUpperCase() === el ? ` ${el}` : el).join('');
+}
+
+function queueTime(customers, n) {
+    let cases = '0'.repeat(n).split('').map(el => Number(el));
+    for (const people of customers) {
+        cases.sort((a, b) => a - b)[0] += people;
+    }
+    return cases.sort((a, b) => b - a)[0];
+}
+
+function wave(str) {
+    let answerArr = [];
+    str.split('').forEach((el, index) => {
+        if (el !== ' ') {
+            answerArr.push(str.split('').map((e, i) => i === index ? e.toUpperCase() : e).join(''));
+        }
+    })
+    return answerArr;
+}
+
+function sumDigPow(a, b) {
+    let answerArr = [];
+    for (let j = a; j < b; j++) {
+        if (String(j).split('').reduce((acc, el, i) => acc + (+el) ** (i + 1), 0) === j) {
+            answerArr.push(j);
+        }
+    }
+    return answerArr;
+}
+
+function count(str) {
+    let uniqArr = str.split('').filter((el, i, array) => i === array.indexOf(el));
+    let answerObj = {};
+    for (const element of uniqArr) {
+        answerObj[element] = 0;
+    }
+    str.split('').forEach(el => answerObj[el]++);
+    return answerObj;
+}
+
+function twoSum(numbers, target) {
+    let answer = [];
+    let answerArr = numbers.reduce((acc, el, i) => {
+        for (let j = 0; j < numbers.length; j++) {
+            if (j !== i) {
+                if (numbers[j] + el === target) {
+                    if (!answer.length) answer = [i, j];
+                    return [...acc, i];
+                }
+            }
+        }
+        return acc;
+    }, [])
+    return answer
+}
+
+console.log(twoSum([1,2,3], 4));
