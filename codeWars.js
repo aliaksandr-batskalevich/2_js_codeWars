@@ -1122,7 +1122,7 @@ function longestConsec(strarr, k) {
     if (strarr.length === 0 || strarr.length < k || k <= 0) return '';
     let concatArr = strarr.map((el, index, array) => {
         let newEl = '';
-        for (let i = 0; i < k ; i++) {
+        for (let i = 0; i < k; i++) {
             newEl += array[index + i];
         }
         return newEl;
@@ -1147,7 +1147,7 @@ function expandedFormPlus(num) {
                 el += 0;
             }
             return el;
-    })
+        })
         .filter(el => +el !== 0)
         .join(' + ');
 
@@ -1170,17 +1170,17 @@ function expandedForm(num) {
     let numArr = String(num).split('');
     let numArrWithNulls = numArr
         .map((el, index, array) => {
-        for (let i = 1; i < array.length - index; i++) {
-            el += '0'
-        }
-        return el;
-    })
+            for (let i = 1; i < array.length - index; i++) {
+                el += '0'
+            }
+            return el;
+        })
         .filter(el => +el);
 
     return numArrWithNulls.join(' + ')
 }
 
-function inArray(array1,array2){
+function inArray(array1, array2) {
     let array = array1.filter(el1 => {
         return array2.some(el2 => {
             return el2.split(el1).length > 1
@@ -1189,11 +1189,11 @@ function inArray(array1,array2){
     return array.sort();
 }
 
-function bouncingBall(h,  bounce,  window) {
+function bouncingBall(h, bounce, window) {
     if (h <= 0 || bounce <= 0 || bounce >= 1 || window >= h) return -1;
     let count = 0;
-    for (let i = h; i > window ; i *= bounce) {
-        count+= i*bounce > window ? 2 : 1;
+    for (let i = h; i > window; i *= bounce) {
+        count += i * bounce > window ? 2 : 1;
     }
     return count;
 }
@@ -1256,4 +1256,37 @@ function twoSum(numbers, target) {
     return answer
 }
 
-console.log(twoSum([1,2,3], 4));
+function encrypt(text, n) {
+    if (n > 0 && text) {
+        const maker = (text) => {
+            return text.split('').filter((el, i) => !!(i % 2)).concat(text.split('').filter((el, i) => !(i % 2))).join('');
+        };
+        return encrypt(maker(text), n - 1);
+    }
+    return text;
+}
+
+function decrypt(encryptedText, n) {
+    if (n > 0 && encryptedText) {
+        const backMaker = (text) => {
+            let oddLength = text.length % 2
+                ? Math.floor(text.length / 2)
+                : text.length / 2;
+            let evenLength = text.length - oddLength;
+            let odd = text.split('', oddLength);
+            let even = text.split('').slice(oddLength);
+            let result = [];
+            for (let i = 0; i < even.length; i++) {
+                result.push(even[i]);
+                i <= odd.length - 1
+                && result.push(odd[i]);
+            }
+            return result.join('');
+        };
+
+            return decrypt(backMaker(encryptedText), n - 1)
+        }
+        return encryptedText;
+}
+
+console.log(decrypt("hsi  etTi sats!", 1));
