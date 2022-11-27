@@ -1289,4 +1289,44 @@ function decrypt(encryptedText, n) {
         return encryptedText;
 }
 
-console.log(decrypt("hsi  etTi sats!", 1));
+String.prototype.camelCase = function() {
+    return this.split(' ')
+        .map(el => el.split('')
+            .map((el, i) => i === 0 ? el.toUpperCase() : el)
+            .join(''))
+        .join('');
+};
+
+function toWeirdCase(str){
+    return str.toLowerCase().split(' ')
+        .map(el => el.split('')
+            .map((e, i) => !(i % 2) ? e.toUpperCase() : e)
+            .join(''))
+        .join(' ');
+}
+
+function diamond(n){
+    if (n <= 0 || !(n % 2)) return null;
+    let resultArr = [];
+    resultArr.push(`${'*'.repeat(n)}\n`);
+    for (let i = Math.floor(n / 2); i > 0 ; i--) {
+        let starCount = i * 2 - 1;
+        let spaceCount = (n - starCount) / 2;
+        let stars = `${' '.repeat(spaceCount)}${'*'.repeat(starCount)}\n`;
+        resultArr.push(stars);
+        resultArr.unshift(stars);
+    }
+    return resultArr.join('');
+}
+
+function isValidIP(str) {
+    let ipArr = str.split('.');
+    if (ipArr.length !== 4) return false;
+    return ipArr.every(el => {
+        if (el.split('').some(el => !Number.isInteger(+el) || el === '\n' || el === ' ') || !el || (el.length > 1 && !(+el[0]))) return false;
+        return +el >= 0 && +el <= 255;
+    });
+}
+
+console.log(isValidIP('\n1.2.3.4'));
+
