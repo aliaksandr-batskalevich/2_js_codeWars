@@ -1284,12 +1284,12 @@ function decrypt(encryptedText, n) {
             return result.join('');
         };
 
-            return decrypt(backMaker(encryptedText), n - 1)
-        }
-        return encryptedText;
+        return decrypt(backMaker(encryptedText), n - 1)
+    }
+    return encryptedText;
 }
 
-String.prototype.camelCase = function() {
+String.prototype.camelCase = function () {
     return this.split(' ')
         .map(el => el.split('')
             .map((el, i) => i === 0 ? el.toUpperCase() : el)
@@ -1297,7 +1297,7 @@ String.prototype.camelCase = function() {
         .join('');
 };
 
-function toWeirdCase(str){
+function toWeirdCase(str) {
     return str.toLowerCase().split(' ')
         .map(el => el.split('')
             .map((e, i) => !(i % 2) ? e.toUpperCase() : e)
@@ -1305,11 +1305,11 @@ function toWeirdCase(str){
         .join(' ');
 }
 
-function diamond(n){
+function diamond(n) {
     if (n <= 0 || !(n % 2)) return null;
     let resultArr = [];
     resultArr.push(`${'*'.repeat(n)}\n`);
-    for (let i = Math.floor(n / 2); i > 0 ; i--) {
+    for (let i = Math.floor(n / 2); i > 0; i--) {
         let starCount = i * 2 - 1;
         let spaceCount = (n - starCount) / 2;
         let stars = `${' '.repeat(spaceCount)}${'*'.repeat(starCount)}\n`;
@@ -1328,5 +1328,228 @@ function isValidIP(str) {
     });
 }
 
-console.log(isValidIP('\n1.2.3.4'));
+function solution(number) {
+    let rules = {
+        1000: 'M',
+        900: 'CM',
+        500: 'D',
+        400: 'CD',
+        100: 'C',
+        90: 'XC',
+        50: 'L',
+        40: 'XL',
+        10: 'X',
+        9: 'IX',
+        5: 'V',
+        4: 'IV',
+        1: 'I',
+    }
+    let result = '';
+    let keys = Object.keys(rules).sort((a, b) => b - a);
 
+    for (let key of keys) {
+        let count = Math.floor(number / +key);
+        result += rules[key].repeat(count);
+        number -= +key * count;
+        if (number === 0) break;
+    }
+    return result;
+}
+
+function solutionBack(roman) {
+    let rules = {
+        1000: 'M',
+        900: 'CM',
+        500: 'D',
+        400: 'CD',
+        100: 'C',
+        90: 'XC',
+        50: 'L',
+        40: 'XL',
+        10: 'X',
+        9: 'IX',
+        5: 'V',
+        4: 'IV',
+        1: 'I',
+    }
+    let result = [];
+    let keys = ['900', '1000', '400', '500', '90', '100', '40', '50', '9', '10', '4', '5', '1'];
+    for (let key of keys) {
+        let newRomanArr = roman.split(rules[key]);
+        let count = newRomanArr.length - 1;
+        for (let i = 0; i < count; i++) {
+            result.push(+key);
+        }
+        roman = newRomanArr.join('');
+    }
+    return result.reduce((acc, el) => acc + el);
+}
+
+// function sqInRect(lng, wdth, answerArr = []) {
+//     if (lng === wdth && answerArr.length === 0) return null;
+//     if (lng === wdth) {
+//         answerArr.push(lng);
+//         return answerArr;
+//     }
+//     let newLng;
+//     let newWdth;
+//     if (lng > wdth) {
+//         newLng = lng - wdth;
+//         newWdth = wdth;
+//         answerArr.push(wdth)
+//     } else {
+//         newLng = lng;
+//         newWdth = wdth - lng
+//         answerArr.push(lng)
+//     }
+//     return sqInRect(newLng, newWdth, answerArr);
+// }
+function sqInRect(lng, wdth) {
+    let arr = []
+    if (lng === wdth) return null
+    while (lng > 0 && wdth > 0) {
+        arr.push(lng > wdth ? wdth : lng)
+        lng > wdth ? lng -= wdth : wdth -= lng
+    }
+    return arr
+}
+
+function titleCase(title, minorWords) {
+
+    let titleArr = title.toLowerCase().split(' ');
+    return titleArr.map((el, index) => {
+        return minorWords && minorWords.toLowerCase().split(' ').includes(el) && index
+            ? el
+            : el.split('').map((e, i) => !i ? e.toUpperCase() : e).join('')
+    }).join(' ')
+}
+
+function parse(data) {
+    let dataArr = data.split('');
+    let resultArr = [];
+    let initial = 0;
+    for (const command of dataArr) {
+        command === 'i'
+            ? initial++
+            : command === 'd'
+                ? initial--
+                : command === 's'
+                    ? initial = initial ** 2
+                    : command === 'o'
+                        ? resultArr.push(initial)
+                        : initial += 0;
+    }
+    return resultArr;
+}
+
+function stockList(listOfArt, listOfCat) {
+    if (!listOfArt.length || !listOfCat.length) return '';
+    let filterList = listOfArt.filter(el => {
+        return listOfCat.includes(el[0])
+    });
+    let booksObj = {};
+    for (const cat of listOfCat) {
+        booksObj[cat] = 0;
+    }
+    for (const category of filterList) {
+        let categoryArr = category.split(' ');
+        let cat = categoryArr[0][0];
+        let count = categoryArr[1];
+        booksObj[cat] += +count;
+    }
+    let answerArr = [];
+    for (const key of Object.keys(booksObj)) {
+        answerArr.push(`(${key} : ${booksObj[key]})`)
+    }
+    return answerArr.join(' - ');
+}
+
+function goodVsEvil(good, evil) {
+    let rules = {
+        'Hobbits': 1,
+        'Orcs': 1,
+        'Men': 2,
+        'Wargs': 2,
+        'Goblins': 2,
+        'Elves': 3,
+        'Uruk Hai': 3,
+        'Dwarves': 3,
+        'Eagles': 4,
+        'Trolls': 5,
+        'Wizards': 10,
+    };
+    let goodOrder = ['Hobbits', 'Men', 'Elves', 'Dwarves', 'Eagles', 'Wizards'];
+    let evilOrder = ['Orcs', 'Men', 'Wargs', 'Goblins', 'Uruk Hai', 'Trolls', 'Wizards'];
+    let goodCount = good.split(' ').map((el, index) => rules[goodOrder[index]] * el).reduce((acc, el) => acc + el);
+    let evilCount = evil.split(' ').map((el, index) => rules[evilOrder[index]] * el).reduce((acc, el) => acc + el);
+
+    return goodCount > evilCount
+        ? "Battle Result: Good triumphs over Evil"
+        : goodCount < evilCount
+            ? "Battle Result: Evil eradicates all trace of Good"
+            : "Battle Result: No victor on this battle field"
+}
+
+function revrot(str, sz) {
+    if (!str || !sz || str.length < sz) return '';
+    let strArr = str.split('');
+    let count = Math.floor(strArr.length / sz);
+    let strArrSz = [...Array(count)];
+    for (let i = 0; i < strArrSz.length; i++) {
+        strArrSz[i] = strArr.slice(i * sz, i * sz + sz);
+    }
+    return strArrSz
+        .map(el => {
+            if (!(el.reduce((acc, el) => acc + el ** 3, 0) % 2)) {
+                return el.reverse().join('');
+            } else {
+                el[el.length] = el[0];
+                el.splice(0, 1);
+                return el.join('');
+            }
+        })
+        .join('');
+}
+
+function partsSums(ls) {
+    console.log(ls);
+    ls.reverse();
+    let resultArr = [0];
+    for (let i = 0; i < ls.length; i++) {
+        resultArr.push(resultArr[resultArr.length - 1] + ls[i]);
+    }
+    resultArr.reverse();
+    return resultArr;
+}
+
+// const findMissing = function (list) {
+//     console.log(list);
+//     let iterArr = [];
+//     list.forEach((el, index, array) => {
+//         iterArr.push(array[index + 1] - el);
+//     });
+//     iterArr = iterArr.filter(el => el);
+//     console.log(iterArr);
+//     let trueIter;
+//     iterArr[0] > 0
+//         ? trueIter = iterArr.reduce((acc, e) => acc > e ? e : acc)
+//         : trueIter = iterArr.reduce((acc, e) => acc < e ? e : acc)
+//     console.log(trueIter);
+//     let goal = list.reduce((acc, el, index, array) => (el + trueIter !== array[index + 1]) && array[index + 1] ? el + trueIter : acc, 0);
+//     return goal;
+// }
+const findMissing = function (list) {
+    let iter = (list[list.length - 1] - list[0]) / list.length;
+    return list.filter((el, index, array) => el + iter !== array[index + 1])[0] + iter;
+}
+
+function meeting(s) {
+    return s.toUpperCase().split(';')
+        .map(el => el.split(':'))
+        .sort((a, b) => (a[1] < b[1]) ? -1 : (a[1] === b[1] && a[0] < b[0]) ? -1 : 1)
+        .map(el => el.reverse())
+        .map(el => `(${el.join(', ')})`)
+        .join('');
+}
+
+console.log(meeting("Alexis:Wahl;John:Bell;Victoria:Schwarz;Abba:Dorny;Grace:Meta;Ann:Arno;Madison:STAN;Alex:Cornwell;Lewis:Kern;Megan:Stan;Alex:Korn"));
