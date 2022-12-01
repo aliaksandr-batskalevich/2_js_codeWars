@@ -1552,4 +1552,92 @@ function meeting(s) {
         .join('');
 }
 
-console.log(meeting("Alexis:Wahl;John:Bell;Victoria:Schwarz;Abba:Dorny;Grace:Meta;Ann:Arno;Madison:STAN;Alex:Cornwell;Lewis:Kern;Megan:Stan;Alex:Korn"));
+function sum(a) {
+    let acc = a;
+
+    function inner(b) {
+        acc += b;
+        return inner;
+    }
+
+    inner.toString = function () {
+        return acc;
+    }
+
+    return inner;
+}
+
+const multiplicationTable = function (size) {
+    return [...Array(size)].map((el, index) => [...Array(size)].map((e, i) => (index + 1) * (i + 1)));
+}
+
+const encryptThis = function (text) {
+    let temp = '';
+    let textArr = text.split(' ')
+        .map(word => word.split('')
+            .map((el, index, array) => {
+                if (index === 0) return el.charCodeAt(0);
+                if (index === 1) {
+                    temp = el;
+                    return array[array.length - 1];
+                }
+                if (index === array.length - 1) return temp;
+                return el;
+            })
+            .join(''))
+        .join(' ')
+    return textArr;
+}
+
+function dataReverse(data) {
+    let arr = [...Array(data.length / 8)]
+        .map((el, index) => data.slice(index * 8, (index + 1) * 8))
+        .reverse()
+        .flat()
+    return arr
+}
+
+function thirt(n) {
+
+    let result = NaN;
+    let preResult = 0;
+
+    while (result !== preResult) {
+        if (!result) {
+            result = n;
+        } else {
+            result = preResult;
+        }
+        preResult = String(result).split('')
+            .reverse()
+            .map((el, index) => +el * ((10 ** index) % 13))
+            .reduce((acc, el) => acc + el)
+    }
+    return result;
+}
+
+function cleanString(s) {
+
+    let sArr = s.split('');
+    let symbolsNum = sArr.filter(el => el !== '#').length;
+    let backspaces = s.length - symbolsNum;
+
+    if (!symbolsNum) return '';
+
+    while (symbolsNum && backspaces) {
+        let bsIndex = sArr.indexOf('#');
+        if (bsIndex) {
+            sArr.splice(bsIndex - 1, 2);
+            symbolsNum--;
+            backspaces--;
+        } else {
+            sArr.splice(bsIndex, 1);
+            backspaces--;
+        }
+    }
+    return sArr.join('');
+}
+
+console.log(cleanString(1234567))
+
+
