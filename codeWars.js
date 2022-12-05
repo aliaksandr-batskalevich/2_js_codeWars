@@ -1638,6 +1638,28 @@ function cleanString(s) {
     return sArr.join('');
 }
 
-console.log(cleanString(1234567))
+function solve(s) {
+    let arr = s.replace(/[aeiou]/g, '-').split('-').filter(el => el);
+    let sumArr = arr.map(el => el.split('').reduce((acc, el) => acc + (el.charCodeAt(0) - 96), 0)).sort((a, b) => b - a)
+    return sumArr[0];
+}
+
+function wordValue(a) {
+    return a
+        .map((el, index) => (el
+            .split(' ')
+            .reduce((acc, el) => acc + el
+                .split('')
+                .reduce((acc, el) => acc + el.charCodeAt(0) - 96, 0), 0)
+        ) * (index + 1));
+}
+
+function getCount(str) {
+    let vowelsArr = 'aeiou'.split('');
+    let count = str.split('').filter(el => vowelsArr.includes(el)).length
+    return count;
+}
+
+console.log(wordValue(["abc", "abc"]))
 
 
