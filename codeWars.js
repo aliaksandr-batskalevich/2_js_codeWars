@@ -1660,6 +1660,53 @@ function getCount(str) {
     return count;
 }
 
-console.log(wordValue(["abc", "abc"]))
+function race(v1, v2, g) {
+    console.log(v1, v2, g);
+    if (v1 >= v2) return null;
+    let time = Math.floor(g / (v2 - v1) * 3600);
+    let hour = Math.floor(time / 3600);
+    let minutes = Math.floor(time / 60) - hour * 60;
+    let seconds = time - hour * 3600 - minutes * 60;
+    return [hour, minutes, seconds];
+}
+
+function validPhoneNumber(phoneNumber){
+    let format = '(xxx) xxx-xxxx';
+    let result = phoneNumber.split('').map(el => (isFinite(+el) && el !== ' ') ? 'x' : el).join('');
+    return format === result;
+}
+
+function encode(str) {
+
+    let vowelsArr = 'aeiou'.split('');
+    return str.split('').map(el => vowelsArr.includes(el.toLowerCase()) ? vowelsArr.indexOf(el.toLowerCase()) + 1 : el).join('');
+}
+
+function decode(string) {
+    const decoderArr = {
+        '1': 'a',
+        '2': 'e',
+        '3': 'i',
+        '4': 'o',
+        '5': 'u',
+    };
+    return string.split('').map(el => Object.keys(decoderArr).includes(el) ? decoderArr[el] : el).join('');
+}
+
+function tripledouble(num1, num2) {
+    let treeLetterArr = [];
+    String(num1).split('').forEach(el => {
+        String(num1).includes(el.repeat(3)) && !treeLetterArr.includes(el) && treeLetterArr.push(el);
+    })
+    if (treeLetterArr.length) {
+        for (const el of treeLetterArr) {
+            if (String(num2).includes(el.repeat(2))) return 1;
+        }
+    }
+    return 0;
+}
+
+console.log(tripledouble(451999277,41177722899));
+
 
 
