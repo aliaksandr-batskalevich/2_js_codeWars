@@ -1706,7 +1706,43 @@ function tripledouble(num1, num2) {
     return 0;
 }
 
-console.log(tripledouble(451999277,41177722899));
+// function foldArray(array, runs) {
+//     console.log(array, runs);
+//     if (runs > 0) {
+//         let newArr
+//         if (array.length % 2) {
+//             newArr = array.slice(0, Math.ceil(array.length / 2));
+//             for (let i = 0; i < newArr.length - 1; i++) {
+//                 newArr[i] += array[array.length - 1 - i];
+//             }
+//         } else {
+//             newArr = array.slice(0, array.length / 2);
+//             for (let i = 0; i < newArr.length; i++) {
+//                 newArr[i] += array[array.length - 1 - i];
+//             }
+//         }
+//         return foldArray(newArr, runs - 1);
+//     }
+//     return array;
+// }
+
+function foldArray(array, runs) {
+    if (!runs) return array;
+    let newArr = [];
+    for (let i = 0; i < Math.ceil(array.length / 2); i++) {
+        newArr[i] = array.length - 1 - i === i ? array[i] : array[i] + array[array.length - 1 - i];
+    }
+    return foldArray(newArr, runs - 1);
+}
+
+const uniqueArrayElements = array => Array.from(new Set(array));
 
 
+const aClean = (arr) => {
+    let map = new Map();
+    for (const arrElement of arr) {
+        map.set(arrElement.toLowerCase().split('').sort().join(''), arrElement);
+    }
+    return Array.from(map.values());
+}
 
