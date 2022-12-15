@@ -1647,10 +1647,10 @@ function solve(s) {
 function wordValue(a) {
     return a
         .map((el, index) => (el
-            .split(' ')
-            .reduce((acc, el) => acc + el
-                .split('')
-                .reduce((acc, el) => acc + el.charCodeAt(0) - 96, 0), 0)
+                .split(' ')
+                .reduce((acc, el) => acc + el
+                    .split('')
+                    .reduce((acc, el) => acc + el.charCodeAt(0) - 96, 0), 0)
         ) * (index + 1));
 }
 
@@ -1670,7 +1670,7 @@ function race(v1, v2, g) {
     return [hour, minutes, seconds];
 }
 
-function validPhoneNumber(phoneNumber){
+function validPhoneNumber(phoneNumber) {
     let format = '(xxx) xxx-xxxx';
     let result = phoneNumber.split('').map(el => (isFinite(+el) && el !== ' ') ? 'x' : el).join('');
     return format === result;
@@ -1744,5 +1744,107 @@ const aClean = (arr) => {
         map.set(arrElement.toLowerCase().split('').sort().join(''), arrElement);
     }
     return Array.from(map.values());
+};
+
+function validate(n) {
+    let numArr = String(n).split('');
+    for (let i = numArr.length - 1; i >= 0; i--) {
+        if ((numArr.length - 1 - i) % 2) {
+            numArr[i] = +numArr[i] * 2 > 9
+                ? String(numArr[i] * 2).split('').reduce((acc, el) => acc + +el, 0)
+                : +numArr[i] * 2;
+        } else {
+            numArr[i] = +numArr[i];
+        }
+    }
+    let sumElArr = numArr.reduce((acc, el) => acc + el);
+    return !(sumElArr % 10);
 }
 
+function upArray(arr) {
+    if (!arr.length || arr.some(el => el < 0 || String(el).length > 1)) return null;
+
+    const iterWorker = (arr, index) => {
+        if (arr[index] + 1 < 10) {
+            arr[index]++;
+            return arr;
+        } else {
+            arr[index] = 0;
+            if (index === 0) {
+                arr.unshift(0);
+                return iterWorker(arr, 0);
+            }
+            return iterWorker(arr, index - 1);
+        }
+    }
+    return iterWorker(arr, arr.length - 1);
+}
+
+function Xbonacci(signature, n) {
+    if (signature.length > n) signature.length = n;
+    let x = signature.length;
+    while (signature.length < n) {
+        let newElement = signature.slice(signature.length - x).reduce((acc, el) => acc + el);
+        signature.push(newElement);
+    }
+    return signature;
+}
+
+function calc(expr) {
+    if (!expr) return 0;
+    let triggers = ['+', '-', '*', '/'];
+    let exprArr = expr.split(' ');
+    while (exprArr.some(el => triggers.includes(el))) {
+        let triggerIndex;
+        let firstTrigger = exprArr.find((el, index) => {
+            if (triggers.includes(el)) {
+                triggerIndex = index;
+                return true;
+            } else return false;
+        });
+        console.log(firstTrigger, triggerIndex);
+        let newNum;
+        switch (firstTrigger) {
+            case '+':
+                newNum = (+exprArr[triggerIndex - 2]) + (+exprArr[triggerIndex - 1]);
+                break
+            case '-':
+                newNum = (+exprArr[triggerIndex - 2]) - (+exprArr[triggerIndex - 1]);
+                break
+            case '*':
+                newNum = (+exprArr[triggerIndex - 2]) * (+exprArr[triggerIndex - 1]);
+                break
+            case '/':
+                newNum = (+exprArr[triggerIndex - 2]) / (+exprArr[triggerIndex - 1]);
+                break
+        }
+        exprArr.splice(triggerIndex - 2, 3, newNum);
+        console.log(exprArr);
+    }
+    return +exprArr[0];
+}
+
+// function pyramid(n) {
+//     if (n >= 0) {
+//        return [...Array(n)].map((el, index) => new Array(index + 1).fill(1))
+//     }
+// }
+const pyramid = n => n >= 0 ? [...Array(n)].map((el, index) => new Array(index + 1).fill(1)) : null;
+
+const disemvowel = str => str.replace(/[aeiouAEIOU]/g, '');
+
+const squareDigits = (num) => +String(num).split('').map(el => (+el) ** 2).join('');
+
+function highestRank(arr) {
+    let set = Array.from(new Set(arr));
+    let countArr = [...Array(set.length)].map((el, index) => ({num: set[index], count: 0}));
+    arr.forEach(el => {
+        countArr.find(e => e.num === el).count++;
+    });
+    countArr.sort((a, b) => b.count - a.count);
+    let maxValue = countArr[0].count;
+    let answer = countArr.filter(el => el.count === maxValue).sort((a, b) => b.num - a.num)[0].num;
+    return answer;
+}
+
+console.log(highestRank([12, 10, 8, 12, 7, 6, 4, 10, 12, 10]))
