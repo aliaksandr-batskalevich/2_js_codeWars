@@ -1847,4 +1847,8 @@ function highestRank(arr) {
     return answer;
 }
 
-console.log(highestRank([12, 10, 8, 12, 7, 6, 4, 10, 12, 10]))
+function dashatize(num) {
+    return  String(Math.abs(num)).split('').map((el, index, array) => (el % 2 && array.length > 1) ? (index === 0 ? `${el}-` : index === array.length - 1 ? `-${el}` : `-${el}-`) : el).join('').replace(/--/g, '-');
+}
+
+console.log(dashatize(-1))
