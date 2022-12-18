@@ -1093,11 +1093,9 @@ function validBraces(braces) {
         '[': ']',
     };
     while (bracesArr.length) {
-        let closesIndexes = bracesArr.map((el, index) => {
-            if (el === '}' || el === ']' || el === ')') return index
-        })
+        let closesIndexes = bracesArr
+            .map((el, index) => (el === '}' || el === ']' || el === ')') && index)
             .filter(el => el)
-            .sort((a, b) => a - b);
         if (closesIndexes.length === 0) break;
         let firstCloseIndex = closesIndexes[0];
         if (bracesArr[firstCloseIndex] === rules[bracesArr[firstCloseIndex - 1]]) {
@@ -1108,7 +1106,6 @@ function validBraces(braces) {
     }
     return !bracesArr.length
 }
-
 
 function isPrime(num) {
     if (num < 2) return false;
@@ -1848,7 +1845,29 @@ function highestRank(arr) {
 }
 
 function dashatize(num) {
-    return  String(Math.abs(num)).split('').map((el, index, array) => (el % 2 && array.length > 1) ? (index === 0 ? `${el}-` : index === array.length - 1 ? `-${el}` : `-${el}-`) : el).join('').replace(/--/g, '-');
+    return String(Math.abs(num)).split('').map((el, index, array) => (el % 2 && array.length > 1) ? (index === 0 ? `${el}-` : index === array.length - 1 ? `-${el}` : `-${el}-`) : el).join('').replace(/--/g, '-');
 }
 
-console.log(dashatize(-1))
+function moveZeros(arr) {
+    console.log(arr);
+    let arrWithout = arr.filter(el => typeof el !== 'number' || String(el)[String(el).length - 1] !== '0');
+    let arrWith = arr.filter(el => typeof el === 'number' && String(el)[String(el).length - 1] === '0');
+    return [...arrWithout, ...arrWith];
+}
+
+function humanReadable (seconds) {
+
+    let mask = 'HH:MM:SS';
+
+    const pad = num => num < 10 ? '0' + num : num;
+    let hour = Math.floor(seconds / 3600);
+    let minutes = Math.floor((seconds - 3600 * hour) / 60);
+    let secondsRes = seconds - (hour * 60 + minutes) * 60;
+
+    return mask
+        .replace('HH', pad(hour))
+        .replace('MM', pad(minutes))
+        .replace('SS', pad(secondsRes));
+}
+
+console.log(humanReadable( 359999))
