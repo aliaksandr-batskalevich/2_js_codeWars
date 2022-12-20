@@ -1855,7 +1855,7 @@ function moveZeros(arr) {
     return [...arrWithout, ...arrWith];
 }
 
-function humanReadable (seconds) {
+function humanReadable(seconds) {
 
     let mask = 'HH:MM:SS';
 
@@ -1870,4 +1870,163 @@ function humanReadable (seconds) {
         .replace('SS', pad(secondsRes));
 }
 
-console.log(humanReadable( 359999))
+function rgb(r, g, b) {
+    const numValidator = (num) => num < 0 ? 0 : num > 255 ? 255 : num;
+    const twoNumCorrector = (num16) => num16.length < 2 ? 0 + num16 : num16;
+    const hexColorMaker = (num) => twoNumCorrector(numValidator(num).toString(16)).toUpperCase();
+
+    let hexColor = hexColorMaker(r) + hexColorMaker(g) + hexColorMaker(b);
+    return hexColor;
+}
+
+function dirReduc(arr) {
+    const apposite = {
+        'NORTH': 'SOUTH',
+        'SOUTH': 'NORTH',
+        'WEST': 'EAST',
+        'EAST': 'WEST',
+    };
+    let trigger = true;
+    while (trigger) {
+        outer:
+            for (let i = 0; i < arr.length; i++) {
+                if (arr[i] === apposite[arr[i + 1]]) {
+                    arr.splice(i, 2);
+                    break outer;
+                }
+                if (i === arr.length - 1) trigger = false;
+            }
+            if (!arr.length) trigger = false;
+    }
+    return arr;
+}
+
+const superSum = (num) => {
+    let acc = num;
+    function sumWorker(nextNum) {
+        acc += nextNum;
+        return sumWorker;
+    }
+
+    sumWorker.toString = function () {
+        return acc
+    }
+
+    return sumWorker;
+}
+
+function addressCor(country) {
+    return function(city) {
+        return function (street) {
+            return function (home) {
+                return {country, city, street, home}
+            }
+        }
+    }
+}
+
+let polandAddress = addressCor('Poland');
+let belarusAddress = addressCor('Belarus');
+
+let kiev = addressCor('Ukrain')('Kiev');
+
+let me = belarusAddress('Brest')('Rokossovskogo')(2);
+let friend = kiev('Street')(3);
+let work = polandAddress('Gdansk')('Sea')(10);
+
+
+// function resultMaker(num, arg) {
+//     let result
+//     switch (arg[0]) {
+//         case '+':
+//             result = num + +arg[1];
+//             break;
+//         case '-':
+//             result = num - arg[1];
+//             break;
+//         case '*':
+//             result = num * arg[1];
+//             break;
+//         case '/':
+//             result = num / arg[1];
+//             break;
+//     }
+//     return Math.floor(result);
+// }
+// function zero(arg) {
+//     let num = 0;
+//     if (arg === undefined) return num;
+//     return resultMaker(num, arg);
+// }
+// function one(arg) {
+//     let num = 1;
+//     if (arg === undefined) return num;
+//     return resultMaker(num, arg);
+// }
+// function two(arg) {
+//     let num = 2;
+//     if (arg === undefined) return num;
+//     return resultMaker(num, arg);
+// }
+// function three(arg) {
+//     let num = 3;
+//     if (arg === undefined) return num;
+//     return resultMaker(num, arg);
+// }
+// function four(arg) {
+//     let num = 4;
+//     if (arg === undefined) return num;
+//     return resultMaker(num, arg);
+// }
+// function five(arg) {
+//     let num = 5;
+//     if (arg === undefined) return num;
+//     return resultMaker(num, arg);
+// }
+// function six(arg) {
+//     let num = 6;
+//     if (arg === undefined) return num;
+//     return resultMaker(num, arg);
+// }
+// function seven(arg) {
+//     let num = 7;
+//     if (arg === undefined) return num;
+//     return resultMaker(num, arg);
+// }
+// function eight(arg) {
+//     let num = 8;
+//     if (arg === undefined) return num;
+//     return resultMaker(num, arg);
+// }
+// function nine(arg) {
+//     let num = 9;
+//     if (arg === undefined) return num;
+//     return resultMaker(num, arg);
+// }
+//
+// function plus(arg) {
+//     return `+${arg}`;
+// }
+// function minus(arg) {
+//     return `-${arg}`;
+// }
+// function times(arg) {
+//     return `*${arg}`;
+// }
+// function dividedBy(arg) {
+//     return `/${arg}`;
+// }
+
+function rot13(message){
+    let alphabet = 'abcdefghijklmnopqrstuvwxyz';
+    const shaker = (letter) => {
+        let isUpperCase = letter === letter.toUpperCase();
+        let alphabetIndex = letter.toLowerCase().charCodeAt(0) - 96;
+        let newIndex = alphabetIndex + 13 > 26 ? alphabetIndex - 13 : alphabetIndex + 13;
+        let newLetter = alphabet[newIndex - 1];
+        return isUpperCase ? newLetter.toUpperCase() : newLetter;
+    }
+    return message.split('').map(el => alphabet.includes(el.toLowerCase()) ? shaker(el) : el).join('');
+}
+
+console.log(rot13("Test"));
