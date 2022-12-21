@@ -2029,5 +2029,30 @@ function rot13(message){
     return message.split('').map(el => alphabet.includes(el.toLowerCase()) ? shaker(el) : el).join('');
 }
 
+const maxSequence = function(arr){
+    let outAcc = [];
+    for (let i = 0; i < arr.length; i++) {
+        let testArr = arr.slice(i);
+        let maxSum = 0;
+        let reduce = testArr.reduce((acc, el) => {
+            let result = acc + el;
+            if (result > maxSum) maxSum = result;
+            return result;
+        }, 0);
+        outAcc.push(maxSum);
+    }
+    return outAcc.length ? Math.max(...outAcc) : 0;
+}
 
-console.log(rot13("Test"));
+function productFib(prod){
+    const fibMaker = (a, b) => {
+        if ( a * b >= prod) return [a, b];
+        let nextNum = a + b;
+        return fibMaker(b, nextNum);
+    }
+    let answerArr = fibMaker(0, 1);
+    return [...answerArr, answerArr[0] * answerArr[1] === prod];
+}
+
+
+console.log(maxSequence([]));
