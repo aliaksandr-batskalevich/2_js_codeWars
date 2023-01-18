@@ -1896,13 +1896,14 @@ function dirReduc(arr) {
                 }
                 if (i === arr.length - 1) trigger = false;
             }
-            if (!arr.length) trigger = false;
+        if (!arr.length) trigger = false;
     }
     return arr;
 }
 
 const superSum = (num) => {
     let acc = num;
+
     function sumWorker(nextNum) {
         acc += nextNum;
         return sumWorker;
@@ -1916,7 +1917,7 @@ const superSum = (num) => {
 }
 
 function addressCor(country) {
-    return function(city) {
+    return function (city) {
         return function (street) {
             return function (home) {
                 return {country, city, street, home}
@@ -2017,7 +2018,7 @@ let work = polandAddress('Gdansk')('Sea')(10);
 //     return `/${arg}`;
 // }
 
-function rot13(message){
+function rot13(message) {
     let alphabet = 'abcdefghijklmnopqrstuvwxyz';
     const shaker = (letter) => {
         let isUpperCase = letter === letter.toUpperCase();
@@ -2029,7 +2030,7 @@ function rot13(message){
     return message.split('').map(el => alphabet.includes(el.toLowerCase()) ? shaker(el) : el).join('');
 }
 
-const maxSequence = function(arr){
+const maxSequence = function (arr) {
     let outAcc = [];
     for (let i = 0; i < arr.length; i++) {
         let testArr = arr.slice(i);
@@ -2044,9 +2045,9 @@ const maxSequence = function(arr){
     return outAcc.length ? Math.max(...outAcc) : 0;
 }
 
-function productFib(prod){
+function productFib(prod) {
     const fibMaker = (a, b) => {
-        if ( a * b >= prod) return [a, b];
+        if (a * b >= prod) return [a, b];
         let nextNum = a + b;
         return fibMaker(b, nextNum);
     }
@@ -2054,5 +2055,58 @@ function productFib(prod){
     return [...answerArr, answerArr[0] * answerArr[1] === prod];
 }
 
+const writer = (callback) => async (wordsArr) => {
+    const timeoutShaker = (min, max) => Math.floor(min + Math.random() * (max - min + 1));
+    for (const word of wordsArr) {
+        for (let i = 0; i < 2; i++) {
+            for (let j = 0; j < word.length; j++) {
+                let limit = !i ? j + 1 : word.length - j;
+                let letters = word.split('', limit).join('');
+                await new Promise((res) => {
+                    setTimeout(res, !i ? timeoutShaker(50, 400) : 100)
+                });
+                callback(letters);
+            }
+        }
+    }
+};
 
-console.log(maxSequence([]));
+function generateHashtag(str) {
+    if (str.split(' ').join('').length >= 140 || !str.length) return false;
+    let newStr = str.trim().replace(/#/g, '');
+    if (!newStr.trim().length) return false;
+    return '#' + newStr.split(' ').map(el => el.split('').map((char, index) => index === 0 ? char.toUpperCase() : char).join('')).join('');
+}
+
+let str = '    ## #   ';
+
+// Regular
+// let regular = /\+375\s29\s\d{3}\s\d{2}\s\d{2}/;
+// let emailRegular = /^(https?:\/\/)?[A-Za-z0-9\.-]+@([a-z0-9]{2,10}\.)+[a-z]{2,4}$/;
+// console.log(regular.test('+375 29 807 28 88'));
+// console.log(emailRegular.test('jhgcfdhjk.hsdgvh99@gmail.jjsfckk.com'));
+
+function first_non_repeating_letter(s) {
+    let sArr = s.toLowerCase().split('');
+    let result;
+    for (let i = 0; i < sArr.length; i++) {
+        if (sArr.indexOf(sArr[i]) === sArr.lastIndexOf(sArr[i])) {
+            result = s[i];
+            break;
+        }
+    }
+    return result ? result : '';
+}
+
+
+
+function orderWeight(str) {
+    const sumStr = (str) => str.split('').reduce((acc, el) => acc + +el, 0);
+    return str.split(' ').sort((a, b) => sumStr(a) > sumStr(b) || (sumStr(a) === sumStr(b) && a > b) ? 1 : -1).join(' ');
+}
+
+function domainName(url){
+    return url.replace(/(https?:\/\/)?(www\.)?/, '').split('.')[0];
+}
+
+console.log(orderWeight("103 123 4444 99 2000"));
