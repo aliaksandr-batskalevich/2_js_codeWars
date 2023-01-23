@@ -2109,4 +2109,29 @@ function domainName(url){
     return url.replace(/(https?:\/\/)?(www\.)?/, '').split('.')[0];
 }
 
-console.log(orderWeight("103 123 4444 99 2000"));
+function incrementString (str) {
+    let numInStrArr = str.match(/\d+$/g);
+    console.log(numInStrArr);
+    if (!numInStrArr) return str + 1;
+    let numInStr= numInStrArr[0];
+    let resNum = +numInStr + 1;
+    let resMunInStr = String(resNum).padStart(numInStr.length, '0');
+    let result = str.replace(/\d+$/, resMunInStr);
+    return result;
+}
+
+function scramble(str1, str2) {
+    let startIndexes = {};
+    for (let i = 0; i < str2.length; i++) {
+        let startIndex = 0;
+        if (startIndexes[str2[i]]) {
+            startIndex = startIndexes[str2[i]];
+        }
+        let letterPosition = str1.indexOf(str2[i], startIndex);
+        if (letterPosition === -1) return false;
+        startIndexes[str2[i]] = letterPosition + 1;
+    }
+    return true;
+}
+
+console.log(scramble('scriptjavx',        'javascript' ));
