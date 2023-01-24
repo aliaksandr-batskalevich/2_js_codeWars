@@ -2099,21 +2099,20 @@ function first_non_repeating_letter(s) {
 }
 
 
-
 function orderWeight(str) {
     const sumStr = (str) => str.split('').reduce((acc, el) => acc + +el, 0);
     return str.split(' ').sort((a, b) => sumStr(a) > sumStr(b) || (sumStr(a) === sumStr(b) && a > b) ? 1 : -1).join(' ');
 }
 
-function domainName(url){
+function domainName(url) {
     return url.replace(/(https?:\/\/)?(www\.)?/, '').split('.')[0];
 }
 
-function incrementString (str) {
+function incrementString(str) {
     let numInStrArr = str.match(/\d+$/g);
     console.log(numInStrArr);
     if (!numInStrArr) return str + 1;
-    let numInStr= numInStrArr[0];
+    let numInStr = numInStrArr[0];
     let resNum = +numInStr + 1;
     let resMunInStr = String(resNum).padStart(numInStr.length, '0');
     let result = str.replace(/\d+$/, resMunInStr);
@@ -2134,4 +2133,47 @@ function scramble(str1, str2) {
     return true;
 }
 
-console.log(scramble('scriptjavx',        'javascript' ));
+function score(dice) {
+    const rules = {
+        111: 1000,
+        666: 600,
+        555: 500,
+        444: 400,
+        333: 300,
+        222: 200,
+        1: 100,
+        5: 50,
+    };
+    let score = 0;
+    dice.sort((a, b) => a - b);
+    let keys = ['111', '666', '555', '444', '333', '222', '1', '5'];
+    for (const key of keys) {
+        let diceInStr = dice.join('');
+        let match = diceInStr.match(new RegExp(key, 'g'));
+        if (match) {
+            if (match.length === 2 && key.length === 3) {
+                score += rules[key] * 2;
+                break;
+            } else {
+                score += rules[key] * match.length;
+                dice = diceInStr.replace(key, '').split('');
+            }
+        }
+    }
+    return score;
+}
+
+function zeros(n) {
+    let zeros = typeof n === 'bigint' ? 0n : 0;
+    const maker = (n, x) => {
+        let res = Math.floor(n / x);
+        if (res > 0) {
+            zeros += res;
+            return maker(n, x * (typeof n === 'bigint' ? 5n : 5))
+        }
+    }
+    maker(n, typeof n === 'bigint' ? 5n : 5);
+    return zeros;
+}
+
+console.log(zeros(1000));
