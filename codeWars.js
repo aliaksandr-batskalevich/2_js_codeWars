@@ -2176,4 +2176,47 @@ function zeros(n) {
     return zeros;
 }
 
-console.log(zeros(1000));
+function perimeter(n) {
+    let fibArr = [...Array(n + 1)];
+    fibArr.forEach((el, index) => index === 0 || index === 1 ? fibArr[index] = 1 : fibArr[index] = fibArr[index - 2] + fibArr[index - 1]);
+    return 4 * fibArr.reduce((acc, el) => acc + el);
+}
+
+function primeFactors(num) {
+
+    const isPrime = (num) => {
+        if (num < 2) return false;
+        for (let i = 2; i <= Math.sqrt(num); i++) {
+            if (num % i === 0) return false;
+        }
+        return true;
+    };
+
+    let primeArr = [];
+
+    while (num !== 1) {
+        for (let i = 2; i <= num; i++) {
+            if (isPrime(i) && !(num % i)) {
+                primeArr.push(i);
+                num /= i;
+            }
+        }
+    }
+
+    primeArr.sort((a, b) => a - b);
+
+    let uniqPrimeArr = [...new Set(primeArr)];
+    let result = uniqPrimeArr
+        .map(el => {
+            let count = primeArr.filter(f => f === el).length;
+            return `(${el}${count > 1 ? `**${count}` : ''})`
+        })
+        .join('');
+
+    return result;
+}
+
+// 7775460
+// (2**2)(3**3)(5)(7)(11**2)(17)
+
+console.log(primeFactors(7775460));
