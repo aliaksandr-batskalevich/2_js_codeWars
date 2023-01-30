@@ -66,21 +66,22 @@ function sumPairs(arr, s) {
     let firstIndexInit = 0;
     let lastIndexInit = arr.length;
     const maker = (firstIndex, lastIndex) => {
-            for (let i = firstIndex; i < lastIndex; i++) {
-                for (let j = i + 1; j < lastIndex; j++) {
-                    if (arr[i] + arr[j] === s) {
-                        firstIndexInit = i;
-                        lastIndexInit = j;
-                        return maker(i, j);
-                    }
+        for (let i = firstIndex; i < lastIndex; i++) {
+            for (let j = i + 1; j < lastIndex; j++) {
+                if (arr[i] + arr[j] === s) {
+                    firstIndexInit = i;
+                    lastIndexInit = j;
+                    return maker(i, j);
                 }
             }
+        }
     }
-   maker(firstIndexInit, lastIndexInit);
+    maker(firstIndexInit, lastIndexInit);
     if (lastIndexInit !== arr.length) {
         return [arr[firstIndexInit], arr[lastIndexInit]];
     }
 }
+
 function sumPairs1(arr, s) {
     let first;
     let last;
@@ -105,7 +106,7 @@ function sumPairs1(arr, s) {
     }
 }
 
-function pickPeaks(arr){
+function pickPeaks(arr) {
     let pos = [];
     let peaks = [];
     let currentPeak = [];
@@ -130,3 +131,91 @@ function pickPeaks(arr){
 }
 
 const REGEXP = /^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])[a-zA-Z0-9]{6,}$/
+
+class PaginationHelper {
+    constructor(collection, itemsPerPage) {
+        this.collection = collection;
+        this.itemsPerPage = itemsPerPage;
+
+        this._maxFullPageIndex = Math.floor(collection.length / itemsPerPage) - 1;
+        this._itemsLastPage = collection.length % itemsPerPage;
+    }
+
+    itemCount() {
+        return this.collection.length;
+    }
+
+    pageCount() {
+        return Math.ceil(this.itemCount() / this.itemsPerPage);
+    }
+
+    pageItemCount(pageIndex) {
+        return pageIndex <= this._maxFullPageIndex && pageIndex >= 0
+            ? this.itemsPerPage
+            : pageIndex === this.pageCount() - 1
+                ? this._itemsLastPage
+                : -1;
+    }
+
+    pageIndex(itemIndex) {
+        if (itemIndex >= 0 && itemIndex <= this.collection.length - 1) {
+            return Math.ceil(itemIndex / this.itemsPerPage) === this.pageCount()
+                ? this.pageCount() - 1
+                : Math.floor(itemIndex / this.itemsPerPage);
+        }
+        return -1;
+    }
+}
+
+// let inst = new PaginationHelper([1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24], 10);
+// console.log(inst.pageCount());
+// console.log(inst.itemCount());
+// console.log(inst.pageItemCount(1));
+// console.log(inst.pageItemCount(2));
+// console.log(inst.pageItemCount(3));
+// console.log(inst.pageIndex(40));
+// console.log(inst.pageIndex(22));
+// console.log(inst.pageIndex(3));
+// console.log(inst.pageIndex(0));
+// console.log(inst.pageIndex(-1));
+// console.log(inst.pageIndex(-23));
+// console.log(inst.pageIndex(-15));
+
+
+function gap(g, m, n) {
+    const isPrime = (num) => {
+        if (num < 2) return false;
+        for (let i = 2; i <= Math.sqrt(num); i++) {
+            if (num % i === 0) return false;
+        }
+        return true;
+    };
+    let first;
+    let second;
+    const maker = (firstIn) => {
+        for (let i = firstIn + 1; i <= n; i++) {
+            if (isPrime(i)) {
+                if (i - firstIn === g) {
+                    second = i;
+                    return;
+                } else {
+                    first = i;
+                    return maker(first);
+                }
+            }
+        }
+    };
+    for (let i = m; i <= n; i++) {
+        if (isPrime(i)) {
+            first = i;
+            break;
+        }
+    }
+    console.log(first);
+    maker(first);
+
+    return second ? [first, second] : null;
+}
+
+
+console.log(gap(4,100,110));
