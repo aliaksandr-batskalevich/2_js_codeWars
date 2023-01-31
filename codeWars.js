@@ -217,5 +217,33 @@ function gap(g, m, n) {
     return second ? [first, second] : null;
 }
 
+let lastDigit = function (str1, str2) {
+    let rules = {
+        '1': [1, 1, 1, 1],
+        '2': [2, 4, 8, 6],
+        '3': [3, 9, 7, 4],
+        '4': [4, 6, 4, 6],
+        '5': [5, 5, 5, 5],
+        '6': [6, 6, 6, 6],
+        '7': [7, 9, 3, 1],
+        '8': [8, 4, 2, 6],
+        '9': [9, 1, 9, 1],
+    }
+    // if (str2.length > 90) return 6;
+    if (+str2 === 0) return 1;
+    let lastNumStr = str1.match(/\d$/)[0];
+    if (lastNumStr === '0') return 0;
+    let lastNumInDeg = str2.length === 1 ? +(str2.match(/\d$/)[0]) : +(str2.match(/\d{2}$/)[0]);
+    let position = lastNumInDeg % 4 ? lastNumInDeg % 4 - 1 : 3;
 
-console.log(gap(4,100,110));
+    let result = rules[lastNumStr][position];
+    return result;
+}
+
+function int32ToIp(int32){
+    return int32
+        .toString(2).padStart(32, '0')
+        .match(/\d{8}/g)
+        .map(el => parseInt(el, 2))
+        .join('.');
+}
