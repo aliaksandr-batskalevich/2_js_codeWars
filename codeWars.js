@@ -240,10 +240,73 @@ let lastDigit = function (str1, str2) {
     return result;
 }
 
-function int32ToIp(int32){
+function numberToIp(int32){
     return int32
         .toString(2).padStart(32, '0')
         .match(/\d{8}/g)
         .map(el => parseInt(el, 2))
         .join('.');
 }
+
+function fibonacciBeta(n) {
+    let cache = {
+        '0': 0,
+        '1': 1,
+    };
+    const worker = (n) => {
+        if (cache[String(n)] !== undefined) {
+            return cache[String(n)];
+        }
+
+        let firstNum;
+        if (cache[String(n - 2)] !== undefined) {
+            firstNum = cache[String(n - 2)];
+        } else {
+            firstNum = worker(n - 2);
+            cache[String(n - 2)] = firstNum;
+        }
+
+        let secondNum;
+        if (cache[String(n - 1)] !== undefined) {
+            secondNum = cache[String(n - 1)];
+        } else {
+            secondNum = worker(n - 1);
+            cache[String(n - 1)] = secondNum;
+        }
+
+        let result = firstNum + secondNum;
+        cache[String(n)] = result;
+        return result;
+    }
+    return worker(n);
+}
+
+const fibonacci = (function () {
+    let mem = [0, 1];
+    return function (n) {
+        if (mem[n] === undefined)
+            mem[n] = fibonacci(n - 1) + fibonacci(n - 2);
+        return mem[n];
+    };
+})();
+
+function ipsBetween(start, end){
+    const ipToNumber = (ip) => parseInt(ip.split('.').map(el => (+el).toString(2).padStart(8, '0')).join(''), 2);
+    let first = ipToNumber(start);
+    let second = ipToNumber(end);
+    return second - first;
+}
+
+
+function add(n) {
+    let num = m => add(n + m);
+    num.toString = () => n;
+    return num;
+}
+
+function alphanumeric(string){
+    return /^[a-z0-9]+$/i.test(string);
+}
+
+
+console.log(alphanumeric(''));
