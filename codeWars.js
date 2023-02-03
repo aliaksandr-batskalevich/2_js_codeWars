@@ -309,7 +309,7 @@ function alphanumeric(string) {
 }
 
 
-// must be six
+// must be fix
 function josephus(items, k) {
     let result = [];
     const nextIndexMaker = (startIndex) => {
@@ -359,5 +359,67 @@ function convertFrac(lst) {
     return `(${result.join(')(')})`;
 }
 
+function isSolved(board) {
+    let isNotEnd = board.some(arr => arr.includes(0));
+    const isWinner = (user) => {
+        let firstRule = board.some(arr => arr.every(num => num === user));
+        let secondRule = [0, 1, 2].some(indexIn => [0, 1, 2].every(indexOut => user === board[indexOut][indexIn]));
+        let thirdRule = [0, 1, 2].every(index => user === board[index][index]) || [2, 1, 0].every((first, second, array) => user === board[first][second]);
+        return firstRule || secondRule || thirdRule;
+    };
+    return isWinner(1) ? 1 : isWinner(2) ? 2 : isNotEnd ? -1 : 0;
+}
 
-console.log(convertFrac([[1, 2], [1, 3], [1, 4]]));
+function rot13(str) {
+    return str.replace(/[a-z]/ig, function(x){
+        return String.fromCharCode(x.charCodeAt(0) + (x.toLowerCase() <= 'm' ? 13: -13));
+    });
+}
+
+// must be fix
+// function parseMolecule(formula) {
+//     let result = {};
+//     let regEx1 = /[A-Z][a-z]?[0-9]?/g;
+//     let elementsArr = formula.match(regEx1);
+//     elementsArr.forEach(el => {
+//         let element = el.replace(/[0-9]/g, '');
+//         let numStr = el.replace(/[a-z]/gi, '');
+//         let count = numStr ? +numStr : 1;
+//         result[element] ? result[element] += count : result[element] = count;
+//     });
+//     let uniqElementsArr = Object.keys(result);
+//
+//     const multiply = (group) => {
+//         if (firstBraces) {
+//             for (const group of firstBraces) {
+//                 let ind = group.match(/\d+$/g, '')[0];
+//                 let elementsGroup = group.replace(/[0-9\)\(\[\]]/g, '');
+//                 for (let element of uniqElementsArr) {
+//                     let match = elementsGroup.match(new RegExp(element));
+//                     if (match) {
+//                         result[element] *= ind;
+//                     }
+//                 }
+//             }
+//         }
+//     };
+//     let regEx2 = /\(.+\)[0-9]+/g;
+//     let regEx3 = /\[.+\][0-9]+/g;
+//
+//     let firstBraces = formula.match(regEx2);
+//     let secondBraces = formula.match(regEx3);
+//     multiply(firstBraces);
+//     multiply(secondBraces);
+//
+//     return result;
+// }
+
+function hexStringToRGB(hexString) {
+    let colorsArr16 = hexString.slice(1).match(/[a-z0-9]{2}/gi);
+    let colorsArr10 = colorsArr16.map(el => parseInt(el, 16));
+    console.log(colorsArr10);
+    return {r: colorsArr10[0], g: colorsArr10[1], b: colorsArr10[2]};
+}
+
+
+console.log(hexStringToRGB('#FF9933'));
