@@ -240,7 +240,7 @@ let lastDigit = function (str1, str2) {
     return result;
 }
 
-function numberToIp(int32){
+function numberToIp(int32) {
     return int32
         .toString(2).padStart(32, '0')
         .match(/\d{8}/g)
@@ -290,7 +290,7 @@ const fibonacci = (function () {
     };
 })();
 
-function ipsBetween(start, end){
+function ipsBetween(start, end) {
     const ipToNumber = (ip) => parseInt(ip.split('.').map(el => (+el).toString(2).padStart(8, '0')).join(''), 2);
     let first = ipToNumber(start);
     let second = ipToNumber(end);
@@ -304,9 +304,60 @@ function add(n) {
     return num;
 }
 
-function alphanumeric(string){
+function alphanumeric(string) {
     return /^[a-z0-9]+$/i.test(string);
 }
 
 
-console.log(alphanumeric(''));
+// must be six
+function josephus(items, k) {
+    let result = [];
+    const nextIndexMaker = (startIndex) => {
+        if (startIndex >= items.length) startIndex = 0;
+        let nextIndex = startIndex + k - 1 < items.length ? startIndex + k - 1 : startIndex + k - 1 - items.length;
+        return nextIndex;
+    }
+
+    let startIndex = 0;
+    while (items.length) {
+        if (items.length === 1) {
+            result.push(items[0]);
+            break;
+        } else {
+            let nextIndex = nextIndexMaker(startIndex);
+            result.push(items.splice(nextIndex, 1)[0]);
+            startIndex = nextIndex;
+        }
+    }
+    return result;
+}
+
+const isPP = function (n) {
+    for (let i = 2; i <= n / 2; i++) {
+        let pow = 2;
+        while (Math.pow(i, pow) <= n) {
+            if (Math.pow(i, pow) === n) return [i, pow];
+            pow++;
+        }
+    }
+    return null;
+};
+
+function convertFrac(lst) {
+    if (!lst.length) return '';
+    let denominators = lst.map(el => el[1]);
+    let common = 1;
+    denominators.forEach(d => {
+        for (let i = 1; i <= d; i++) {
+            if (!(common * i % d)) {
+                common = common * i;
+                break;
+            }
+        }
+    })
+    let result = lst.map(el => [el[0] * common / el[1], common]);
+    return `(${result.join(')(')})`;
+}
+
+
+console.log(convertFrac([[1, 2], [1, 3], [1, 4]]));
