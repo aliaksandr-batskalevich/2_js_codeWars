@@ -421,5 +421,64 @@ function hexStringToRGB(hexString) {
     return {r: colorsArr10[0], g: colorsArr10[1], b: colorsArr10[2]};
 }
 
+// 02/04/2023
 
-console.log(hexStringToRGB('#FF9933'));
+function toUnderscore(string) {
+    if (typeof string !== 'string') string = String(string);
+    let arr = string.match(/[A-Z][a-z0-9]*/g);
+    if (!arr) return string;
+    return arr.map(el => el.toLowerCase()).join('_');
+}
+
+const solution = function(firstArray, secondArray) {
+    return firstArray.map((el, i) => (el - secondArray[i]) ** 2).reduce((acc, el) => acc + el) / firstArray.length;
+}
+
+// function isMerge(s, part1, part2) {
+//     const worker = (str) => str.replace(/ /g, '');
+//
+//     s = worker(s);
+//     part1 = worker(part1);
+//     part2 = worker(part2);
+//
+//     if (part1 + part2 === s || part2 + part1 === s) return true;
+//
+//     let part1Arr = part1.split('');
+//     let part2Arr = part2.split('');
+//     let sArr = s.split('');
+//
+//     let tester = '';
+//     // const maker = (partArr) => tester + partArr.shift();
+//     for (let i = 0; i < s.length; i++) {
+//         if (part1Arr[0] === s[i]) {
+//             tester = tester + part1Arr.shift();
+//         } else if (part2Arr[0] === s[i]) {
+//             tester = tester + part2Arr.shift();
+//         } else return false;
+//     }
+//     return true;
+// }
+
+Math.round = function(number) {
+    let arr = String(number).split('.');
+    if (arr.length === 1) return number;
+    let isInc = +arr[1][0] > 4;
+    return isInc ? Number(arr[0]) + 1 : Number(arr[0]);
+};
+
+Math.ceil = function(number) {
+    let arr = String(number).split('.');
+    return arr.length === 2 ? +arr[0] + 1 : +arr[0];
+};
+
+Math.floor = function(number) {
+    return +String(number).split('.')[0];
+};
+
+function validISBN10(isbn) {
+    if (!/^\d{9}[\dX]$/.test(isbn)) return false;
+    return (isbn.split('').reduce((acc, el, index) => acc + (el === 'X' ? 10 : +el) * (index + 1), 0) % 11) === 0;
+}
+
+
+console.log(validISBN10("74189376448"));
