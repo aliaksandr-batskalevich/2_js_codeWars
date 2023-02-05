@@ -371,8 +371,8 @@ function isSolved(board) {
 }
 
 function rot13(str) {
-    return str.replace(/[a-z]/ig, function(x){
-        return String.fromCharCode(x.charCodeAt(0) + (x.toLowerCase() <= 'm' ? 13: -13));
+    return str.replace(/[a-z]/ig, function (x) {
+        return String.fromCharCode(x.charCodeAt(0) + (x.toLowerCase() <= 'm' ? 13 : -13));
     });
 }
 
@@ -430,7 +430,7 @@ function toUnderscore(string) {
     return arr.map(el => el.toLowerCase()).join('_');
 }
 
-const solution = function(firstArray, secondArray) {
+const solution = function (firstArray, secondArray) {
     return firstArray.map((el, i) => (el - secondArray[i]) ** 2).reduce((acc, el) => acc + el) / firstArray.length;
 }
 
@@ -459,19 +459,19 @@ const solution = function(firstArray, secondArray) {
 //     return true;
 // }
 
-Math.round = function(number) {
+Math.round = function (number) {
     let arr = String(number).split('.');
     if (arr.length === 1) return number;
     let isInc = +arr[1][0] > 4;
     return isInc ? Number(arr[0]) + 1 : Number(arr[0]);
 };
 
-Math.ceil = function(number) {
+Math.ceil = function (number) {
     let arr = String(number).split('.');
     return arr.length === 2 ? +arr[0] + 1 : +arr[0];
 };
 
-Math.floor = function(number) {
+Math.floor = function (number) {
     return +String(number).split('.')[0];
 };
 
@@ -480,5 +480,37 @@ function validISBN10(isbn) {
     return (isbn.split('').reduce((acc, el, index) => acc + (el === 'X' ? 10 : +el) * (index + 1), 0) % 11) === 0;
 }
 
+let snail = function (array) {
+    const moveRight = (count, result = []) => {
+        result = [...result, ...array.shift()];
+        return --count
+            ? moveDown(count, result)
+            : result;
+    };
+    const moveDown = (count, result) => {
+        for (const arrInn of array) {
+            result.push(arrInn.pop());
+        }
+        return --count
+            ? moveLeft(count, result)
+            : result;
+    };
+    const moveLeft = (count, result) => {
+        result = [...result, ...array.pop().reverse()];
+        return --count
+            ? moveUp(count, result)
+            : result;
+    };
+    const moveUp = (count, result) => {
+        for (let i = array.length - 1; i >= 0; i--) {
+            result.push(array[i].shift());
+        }
+        return --count
+            ? moveRight(count, result)
+            : result;
+    }
+    return moveRight(array.length * 2 - 1);
+}
 
-console.log(validISBN10("74189376448"));
+
+console.log(snail([[1, 2, 3, 4, 5], [6, 7, 8, 9, 10], [11, 12, 13, 14, 15], [16, 17, 18, 19, 20], [21, 22, 23, 24, 25]]));
