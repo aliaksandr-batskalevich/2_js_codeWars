@@ -430,7 +430,7 @@ function toUnderscore(string) {
     return arr.map(el => el.toLowerCase()).join('_');
 }
 
-const solution = function (firstArray, secondArray) {
+const solution1 = function (firstArray, secondArray) {
     return firstArray.map((el, i) => (el - secondArray[i]) ** 2).reduce((acc, el) => acc + el) / firstArray.length;
 }
 
@@ -512,22 +512,188 @@ let snail = function (array) {
     return moveRight(array.length * 2 - 1);
 }
 
-function solution1(list) {
+// const solution1 = list => list
+//     .map((el, index, array) => index === 0 || index === array.length - 1
+//         ? el
+//         : +array[index - 1] + 2 === array[index + 1]
+//             ? `${el}`
+//             : el
+//     )
+//     .map(el => typeof el === 'number' ? el : 'dash')
+//     .join(',')
+//     .replace(/(,dash)+/g, '-')
+//     .replace(/-,/g, '-');
 
-    let result = list
-        .map((el, index, array) => index === 0 || index === array.length - 1
-        ? el
-        : +array[index - 1] + 2 === array[index + 1]
-            ? `${el}`
-            : el
-    )
-        .map(el => typeof el === 'number' ? el : 'dash')
-        .join(',')
-        .replace(/(,dash)+/g, '-')
-        .replace(/-,/g, '-');
 
+// function nextBigger(num){
+//     let numArr =String(num).split('').map(el => +el);
+//     for (let i = numArr.length - 1; i > 0 ; i--) {
+//         if (numArr[i] > numArr[i - 1]) {
+//             numArr[i] += numArr[i - 1];
+//             numArr[i - 1] = numArr[i] - numArr[i - 1];
+//             numArr[i] -= numArr[i - 1];
+//             if (i < numArr.length - 1) {
+//                 let endArr = numArr.splice(i - 1).sort((a, b) => a - b);
+//                 numArr = [...numArr, ...endArr];
+//             }
+//             return +numArr.join('');
+//         }
+//     }
+//     return -1;
+// }
+function nextBigger(num) {
+    let numArr = String(num).split('').map(el => +el);
+    let endValues = [];
+    const endValuesPushAndSort = (el) => {
+        endValues.push(el);
+        endValues.sort((a, b) => a - b);
+    };
+
+    for (let i = numArr.length - 1; i >= 0; i--) {
+        endValuesPushAndSort(numArr.pop());
+        if (endValues.some(el => el > numArr[numArr.length - 1])) {
+            let endIndex = endValues.reduce((acc, endEl, index) => acc === undefined && endEl > numArr[numArr.length - 1] ? index : acc, undefined);
+            let endValue = endValues.splice(endIndex, 1)[0];
+            let buf = numArr.pop();
+            numArr.push(endValue);
+            endValuesPushAndSort(buf);
+            return +[...numArr, ...endValues].join('');
+        }
+    }
+    return -1;
+}
+
+// class Ship {
+//     constructor(draft,crew) {
+//         this.draft = draft;
+//         this.crew = crew;
+//     }
+//
+//     isWorthIt() {
+//         return (this.draft - this.crew * 1.5) > 20
+//     }
+// }
+
+// function Ship(draft,crew) {
+//     this.draft = draft;
+//     this.crew = crew;
+// }
+//
+// Ship.prototype.isWorthIt = function () {
+//     return (this.draft - this.crew * 1.5) > 20
+// }
+// let titanic = new Ship(35, 20);
+
+
+// Array.prototype.reverse = function () {
+//     let temp = this.splice(0);
+//     while (temp.length) {
+//         this.push(temp.pop());
+//     }
+//     return this;
+// };
+
+// Array.prototype.size = function () {
+//     let count = 0;
+//     for (const el of this) count++;
+//     return count;
+// };
+
+// Array.prototype.filter = function (func) {
+//     let resultArr = [];
+//     for (let i = 0; i < this.length; i++) func(this[i], i, this) && resultArr.push(this[i]);
+//     return resultArr;
+// }
+
+// Object.prototype.description =  "TODO: GIVE ME A DESCRIPTION";
+
+// Array.prototype.groupBy = function(fn) {
+//     let result = {};
+//     if (fn === undefined) {
+//         let uniqArr = [...new Set(this)];
+//         uniqArr.forEach((el) => {
+//             result[el] = [];
+//         })
+//         this.forEach(el => {
+//             result[el].push(el);
+//         })
+//     } else {
+//         this.forEach((el) => {
+//             let key = fn(el);
+//             result[key]
+//                 ? result[key].push(el)
+//                 : result[key] = [el];
+//         })
+//     }
+//     return result;
+// }
+
+// Array.prototype.splice = function (from, count, ...insertItems) {
+//     let left = [];
+//     let cut = [];
+//     let right = [];
+//     for (let i = 0; i < this.length; i++) {
+//         if (i < from) {
+//             left[left.length] = this[i];
+//         } else if (i >= from && i < (count !== undefined ? from + count : this.length)) {
+//             cut[cut.length] = this[i];
+//         } else {
+//             right[right.length] = this[i];
+//         }
+//     }
+//
+//     this.length = 0;
+//     let temp = [...left, ...insertItems, ...right];
+//     for (let i = 0; i < temp.length; i++) {
+//         this[i] = temp[i];
+//     }
+//     return cut;
+// };
+
+function solution(input, markers) {
+    let strArr = input.split('\n');
+    let resultArr = strArr.map(str => {
+        let firstMarker;
+        for (let i = 0; i < str.length; i++) {
+            if (markers.some(marker => marker === str[i])) {
+                firstMarker = str[i];
+                markerIndex = i;
+                break;
+            }
+        }
+        return markerIndex
+            ? str.split(firstMarker)[0].trim()
+            : str.trim();
+    });
+    return resultArr.join('\n');
+}
+
+function getPINs(observed) {
+    let rules = {
+        '1': [1, 2, 4],
+        '2': [1, 2, 3, 5],
+        '3': [2, 3, 6],
+        '4': [1, 4, 5, 7],
+        '5': [2, 4, 5, 6, 8],
+        '6': [3, 5, 6, 9],
+        '7': [4, 7, 8],
+        '8': [5, 7, 8, 9, 0],
+        '9': [6, 8, 9],
+        '0': [8, 0],
+    }
+    let variable = observed.split('').map(num => rules[num]);
+    let result = [];
+    const worker = (arr, index, pin) => {
+        for (let i = 0; i < arr.length; i++) {
+            if (index === variable.length - 1) {
+                result.push(pin + arr[i]);
+            } else {
+                worker(variable[index + 1], index + 1, pin + arr[i]);
+            }
+        }
+    }
+    worker(variable[0], 0, '')
     return result;
 }
 
-
-console.log(solution1([-6, -3, -2, -1, 0, 1, 3, 4, 5, 7, 8, 9, 10, 11, 14, 15, 17, 18, 19, 20]));
+console.log(getPINs('46'));
