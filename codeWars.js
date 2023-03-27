@@ -696,4 +696,130 @@ function getPINs(observed) {
     return result;
 }
 
-console.log(getPINs('46'));
+function permutations(string) {
+
+    function worker(arr, prepend) {
+        let i, version, el, result = [];
+        prepend = prepend || [];
+        if (arr.length === 1) return [arr];
+        for (i = 0; i < arr.length; i++) {
+            if (arr.length === 2) {
+                result.push(prepend.concat([arr[i], arr[(i + 1) % 2]]));
+            } else {
+                version = arr.slice();
+                el = version.splice(i, 1);
+                result = result.concat(worker(version, prepend.concat(el)));
+            }
+        }
+        return result;
+    }
+   return [...new Set(worker(string.split('')).map(el => el.join('')))];
+}
+
+// function sumIntervals(intervals) {
+//     let intervalsSort = intervals
+//         .sort((a, b) => a[0] - b[0]);
+//     label:
+//     for (let i = 0; i < intervalsSort.length; i++) {
+//         for (let j = 0; j < i; j++) {
+//             if (intervalsSort[j][1] > intervalsSort[i][0]) {
+//                 if (intervalsSort[j][1] < intervalsSort[i][1]) {
+//                     intervalsSort[j][1] = intervalsSort[i][1];
+//                 }
+//                 intervalsSort[i].length = 0;
+//                 continue label;
+//             }
+//         }
+//     }
+//     let result = intervalsSort.filter(el => el.length).map(int => int[1] - int[0]).reduce((acc, el) => acc + el);
+//     return result;
+// }
+function sumIntervals(intervals) {
+    let resIntervals = [];
+    const ruleMaker = (item, interval) => {
+        let first = interval[0] <= item[1] && interval[0] >= item[0];
+        let second = interval[1] <= item[1] && interval[1] >= item[0];
+        let third = interval[0] <= item[0] && interval[1] >= item[1];
+        return first || second || third;
+    }
+    for (let i = 0; i < intervals.length; i++) {
+        let index = resIntervals.findIndex(item => ruleMaker(item, intervals[i]));
+        if (index !== -1) {
+            resIntervals[index][0] = resIntervals[index][0] > intervals[i][0] ? intervals[i][0] : resIntervals[index][0];
+            resIntervals[index][1] = resIntervals[index][1] < intervals[i][1] ? intervals[i][1] : resIntervals[index][1];
+        } else {
+            resIntervals.push(intervals[i]);
+        }
+    }
+    if (intervals.length === resIntervals.length) {
+        let result = resIntervals.map(int => int[1] - int[0])
+            .reduce((acc, el) => acc + el);
+        return (result);
+    }
+    return sumIntervals(resIntervals);
+}
+
+// console.log(sumIntervals([ [ 1, 5 ], [ 10, 20 ], [ 1, 6 ], [ 16, 19 ], [ 5, 11 ] ]));
+
+
+const reverse = str => str.trim().split(' ').map((el, index) => index % 2 ? el.trim().split('').reverse().join('') : el.trim()).join(' ');
+
+// Array.prototype.square = function() {
+//     return this.map(el => Math.sqrt(el));
+// }
+//
+// Array.prototype.cube = function() {
+//     return this.map(el => el ** 3);
+// }
+//
+// Array.prototype.average = function() {
+//     if (!this.length) return NaN;
+//     return this.reduce((acc, el) => acc + el) / this.length;
+// }
+//
+// Array.prototype.sum = function() {
+//     return this.reduce((acc, el) => acc + el);
+// }
+//
+// Array.prototype.even = function() {
+//     return this.filter(el => !(el % 2));
+// }
+//
+// Array.prototype.odd = function() {
+//     return this.filter(el => el % 2)
+// }
+
+function abbreviate(string) {
+    let pattern = string.replace(/[a-z]{4,}/gi, '+');
+    if (pattern === string) return string;
+    let words = string.match(/[a-z]{4,}/gi);
+    let newWords = words.map(word => `${word[0]}${word.length - 2}${word[word.length - 1]}`);
+    return pattern.split('').map(el => el === '+' ? newWords.shift() : el).join('');
+}
+
+
+let transitCells = [
+    {figure: {}},
+    {figure: {}},
+    {figure: null},
+    {figure: null},
+];
+
+const transitCondition = transitCells.reduce((acc, cell, i, arr) => acc && !(arr[i + 1] && cell.figure && arr[i + 1].figure), true);
+
+
+
+
+const uniqWords = (str1, str2) => {
+    const strArrMaker = (str) => str.toLowerCase().split(/[ ,.()0-9]/).filter(word => word);
+    const rootArr = [...strArrMaker(str1), ...strArrMaker(str2)];
+    const uniqStrArr = rootArr.filter((word, index, array) => array.indexOf(word) === array.lastIndexOf(word)).sort();
+    return uniqStrArr;
+};
+
+const str1 = 'Ячмень, Глиадин (глютен), Овес, Рожь, Спельт, Пшеница, Гречиха, Семя льна, Кукуруза, Просо, Рис, Говядина, Курица, Ягненок, Свинина, Индейка, Коровье молоко, Желток яйца, Белок яйца, Козий сыр, Козье молоко, Овечье молоко, Овечий сыр, Йогурт, Баклажан, Свекла, Болгарский перец, Брокколи, Морковь, Сельдерей, Чили, Огурец, Хрен, Лук-порей, Олива, Лук, Картофель, Краснокачаная капуста, Помидор, Репа, Кабачок, Артишок, Спаржа, Шпинат, Фасоль стручковая, Горох, Соевые бобы, Чечевица, Фасоль белая, Салат-латук, Полевой салат, Яблоко, Абрикос, Банан, Вишня, Виноград (белый/синий), Киви, Лимон, Нектарин, Апельсин, Ананас, Клубника, Арбуз, Груша, Слива, Грейпфрут, Персик, Финик, Базилик, Перец (черный/белый), Корица, Чеснок, Семена горчицы, Мускатный орех, Орегано, Петрушка, Мята, Маковое семя, Розмарин, Тимьян, Ваниль, Миндаль, Кешью, Какао бобы, Лесной орех, Арахис, Фисташка, Кунжут, Семена подсолнечника, Грецкий орех, Кокос, Рак, Лосось, Тунец, Моллюск, Креветка, Анчоус, Рыба-меч, Форель, Камбала, Треска, Пивные дрожжи, Пекарские дрожжи, Мед, Кофе, Черный чай, Грибная смесь 1 (Вешенка обыкн., Белый гриб, Шиитаке, Лисичка обыкн.), Грибная смесь 2 (Польский гриб, Боровик).';
+
+const str2 = 'Ячмень, Глиадин (глютен), Овес, Рожь, Спельт, Пшеница, Гречиха, Семя льна, Кукуруза, Просо, Рис, Говядина, Курица, Ягненок, Свинина, Индейка, Коровье молоко, Желток яйца, Белок яйца, Козий сыр, Козье молоко, Овечье молоко, Овечий сыр, Йогурт, Баклажан, Свекла, Болгарский перец, Брокколи, Морковь, Сельдерей, Чили, Огурец, Хрен, Лук-порей, Олива, Лук, Картофель, Краснокачаная капуста, Помидор, Репа, Кабачок, Артишок, Спаржа, Шпинат, Фасоль стручковая, Горох, Соевые бобы, Чечевица, Фасоль белая, Салат-латук, Полевой салат, Яблоко, Абрикос, Банан, Вишня, Виноград (белый/синий), Киви, Лимон, Нектарин, Апельсин, Ананас, Клубника, Арбуз, Груша, Слива, Грейпфрут, Персик, Финик, Базилик, Перец (черный/белый), Корица, Чеснок, Семена горчицы, Мускатный орех, Орегано, Петрушка, Мята, Маковое семя, Розмарин, Тимьян, Ваниль, Миндаль, Кешью, Какао бобы, Лесной орех, Арахис, Фисташка, Кунжут, Семена подсолнечника, Грецкий орех, Кокос, Рак, Лосось, Тунец, Моллюск, Креветка, Анчоус, Рыба-меч, Форель, Камбала, Треска, Пивные дрожжи, Пекарские дрожжи, Мед, Кофе, Черный чай, Грибная смесь 1 (Вешенка обыкн., Белый гриб, Шиитаке, Лисичка обыкн.), Грибная смесь 2 (Польский гриб, Боровик), Рожковое дерево, Рапс, Утка, Коза, Гусь, Страус, Перепелка, Кролик, Косуля, Цесарка, Лошадь, Кефир, Масло, Камамбер, Казеин, Эменталь сыр, Творог, Моцарелла, Плавленый сыр, Творожный сыр,  Побеги бамбука, Брюссельская капуста, Цветная капуста, Мангольд, Китайская капуста, Укроп, Тыква, Иерусалимский артишок, Листовая капуста, Редис, Савойская капуста, Сладкий картофель, Виноградный лист, Белокочанная капуста, Лук-шалот, Лакричный корень, Стручковый корень, Бобы, Нут, Бобы мунг, Фасоль, Цикорий, Салат айсберг, Руккола, Авокадо, Ежевика, Черника, Клюква, Красная и черная смородина, Инжир, Крыжовник, Медовая дыня, Лайм, Личи, Манго, Папайя, Гранат, Малина, Шиповник, Мускусная дыня, Изюм, Анис, Лавровый лист, Ромашка, Каперсы, Зеленый лук, Гвоздика, Кориандр, Тмин, Фенхель, Имбирь, Майоран, Шафран, Шалфей, Кайенский перец, Карри, Эстрагон, Хмель, Мята, Бразильский орех, Макадамия, Кедровые орехи, Каштан, Орех колы, Карп, Кальмар, Угорь, Дорада, Пикша, Щука, Палтус, Сельдь, Лобстер, Скумбрия, Осьминог, Устрицы, Сардины, Морской окунь, Сибас, Икра, Краб, Агар-агар, Алоэ, Зеленый чай, Разрыхлитель, Сафлоровое масло';
+
+console.log(uniqWords(str1, str2));
+
